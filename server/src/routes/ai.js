@@ -113,6 +113,94 @@ Do not wrap the JSON in markdown code blocks. Just output raw valid JSON.`;
   }
 });
 
+// POST /api/ai/generate-tutor
+// Generates an interactive tutor session (steps) from the uploaded document
+router.post('/generate-tutor', async (req, res) => {
+  try {
+    const { docId } = req.body;
+    let contextText = '';
+    
+    if (docId && documentStore[docId]) {
+      contextText = documentStore[docId].text;
+    } else {
+      return res.status(400).json({ message: 'Valid document required' });
+    }
+
+    const apiKey = process.env.FEATHERLESS_API_KEY;
+    if (!apiKey) return res.status(500).json({ message: 'API key missing' });
+
+    const systemPrompt = `You are an AI Tutor creating an interactive lesson plan.
+Based on the provided document text, extract the core concepts and create a step-by-step learning path.
+You MUST output a valid JSON array of objects, where each object represents a step in the lesson.
+There are two types of steps: "teach" and "ask". Alternate between teaching a concept and asking a question.
+
+Each "teach" object must exactly match this format:
+{
+  "id": "unique-id",
+  "type": "teach",
+  "heading": "Concept Name",
+  "content": "A short, engaging explanation of the concept (2-3 sentences max).",
+  "keyPoints": ["Point 1", "Point 2"],
+  "example": "A simple analogy."
+}
+
+Each "ask" object must exactly match this format:
+{
+  "id": "unique-id",
+  "type": "ask",
+  "content": "Let's check your understanding.",
+  "question": {
+    "type": "mcq",
+    "text": "The question text?",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correctAnswer": "The exact string of the correct option",
+    "hint": "A helpful hint."
+  }
+}
+
+Generate exactly 4 steps (Teach -> Ask -> Teach -> Ask).
+Do NOT wrap the response in markdown code blocks. Just output raw valid JSON array.`;
+
+    const userPrompt = `Document Context (first 6000 chars):\n${contextText.substring(0, 6000)}\n\nCreate the lesson plan array.`;
+
+    const response = await fetch('https://api.featherless.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'Qwen/Qwen2.5-7B-Instruct',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.3
+      })
+    });
+
+    if (!response.ok) throw new Error('Featherless API request failed');
+
+    const data = await response.json();
+    const contentText = data.choices[0].message.content;
+    
+    let parsed;
+    try {
+      const match = contentText.match(/\[[\s\S]*\]/);
+      const jsonStr = match ? match[0] : contentText;
+      parsed = JSON.parse(jsonStr);
+    } catch (e) {
+      console.error('JSON Parse Error in generate-tutor:', e);
+      return res.status(500).json({ message: 'Failed to parse AI output into lesson plan' });
+    }
+
+    res.json({ steps: parsed });
+  } catch (err) {
+    console.error('Tutor generation error:', err);
+    res.status(500).json({ message: 'Tutor generation failed' });
+  }
+});
+
 // POST /api/ai/tts
 // Convert text to speech using ElevenLabs
 router.post('/tts', async (req, res) => {

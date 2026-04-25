@@ -145,6 +145,8 @@ export const aiAPI = {
       return r.json();
     })
   },
+  generateTutor: (docId: string) =>
+    request<any>('/ai/generate-tutor', { method: 'POST', body: { docId } }),
   chat: (message: string, docId?: string) =>
     request<any>('/ai/chat', { method: 'POST', body: { message, docId } }),
   tts: (text: string) => {
