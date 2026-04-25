@@ -42,12 +42,43 @@ router.get('/:id', authMiddleware, (req, res) => {
   res.json(lecture);
 });
 
+const multer = require('multer');
+const fs = require('fs');
+const { ElevenLabsClient } = require('elevenlabs');
+const upload = multer({ dest: 'uploads/' });
+
 // POST /api/lectures/:id/transcribe
-router.post('/:id/transcribe', authMiddleware, (req, res) => {
-  const { transcript } = req.body;
+router.post('/:id/transcribe', authMiddleware, upload.single('audio'), async (req, res) => {
+  let transcriptText = req.body.transcript;
+
+  // If an audio file is uploaded, transcribe it using ElevenLabs
+  if (req.file) {
+    try {
+      const client = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY });
+      const transcription = await client.speechToText.convert({
+        file: fs.createReadStream(req.file.path),
+        model_id: "scribe_v2"
+      });
+      if (transcription.text && transcription.text.trim().length > 0) {
+        transcriptText = transcription.text;
+      }
+    } catch (error) {
+      console.error('ElevenLabs STT error:', error);
+      return res.status(500).json({ message: 'Transcription failed' });
+    } finally {
+      // Clean up the temporary file
+      if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+    }
+  }
+
+  if (!transcriptText) {
+    return res.status(400).json({ message: 'No audio or transcript provided' });
+  }
+
   const lecture = update('lectures', l => l.id === req.params.id && l.teacher_id === req.user.id,
-    { transcript, status: 'completed' });
+    { transcript: transcriptText, status: 'completed' });
   if (!lecture) return res.status(404).json({ message: 'Lecture not found' });
+  
   res.json(lecture);
 });
 

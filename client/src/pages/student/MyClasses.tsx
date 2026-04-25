@@ -3,7 +3,7 @@ import { classesAPI } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import {
   GraduationCap, Plus, X, Loader2, Users, BookOpen, Calendar,
-  ChevronRight, Copy, CheckCircle2, FileText, Video, Search
+  ChevronRight, Copy, CheckCircle2, FileText, Video, Search, Play
 } from 'lucide-react';
 
 export default function MyClassesPage() {
@@ -14,10 +14,7 @@ export default function MyClassesPage() {
   const [joining, setJoining] = useState(false);
   const [joinError, setJoinError] = useState<string | null>(null);
   const [selectedClass, setSelectedClass] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'sessions' | 'notes' | 'materials'>('sessions');
   const [sessions, setSessions] = useState<any[]>([]);
-  const [content, setContent] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,21 +40,11 @@ export default function MyClassesPage() {
 
   const openClass = async (cls: any) => {
     setSelectedClass(cls);
-    setActiveTab('sessions');
     try {
-      const [s, c] = await Promise.all([
-        classesAPI.getSessions(cls.id),
-        classesAPI.getContent(cls.id),
-      ]);
-      setSessions(s); setContent(c);
-    } catch { setSessions([]); setContent([]); }
+      const s = await classesAPI.getSessions(cls.id);
+      setSessions(s);
+    } catch { setSessions([]); }
   };
-
-  const filteredContent = content.filter(c => {
-    const matchTab = activeTab === 'notes' ? c.type === 'notes' : activeTab === 'materials' ? c.type !== 'notes' : true;
-    const matchSearch = !searchQuery || c.title?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchTab && matchSearch;
-  });
 
   // ── Class detail view ──
   if (selectedClass) {
@@ -72,20 +59,9 @@ export default function MyClassesPage() {
           <p className="text-sm text-surface-400 mt-1">by {selectedClass.teacherName} · {selectedClass.memberCount} student{selectedClass.memberCount !== 1 ? 's' : ''}</p>
         </div>
 
-        {/* Tabs */}
-        <div className="shrink-0 px-8 pt-4 flex gap-1 border-b border-surface-800">
-          {(['sessions', 'notes', 'materials'] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors capitalize ${
-                activeTab === tab ? 'bg-surface-900 text-surface-50 border border-b-0 border-surface-700' : 'text-surface-400 hover:text-surface-200'
-              }`}>{tab}</button>
-          ))}
-        </div>
-
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
           <div className="max-w-3xl mx-auto">
-            {activeTab === 'sessions' && (
               <div className="space-y-3">
                 {sessions.length === 0 ? (
                   <div className="text-center py-16 text-surface-500">
@@ -95,47 +71,27 @@ export default function MyClassesPage() {
                 ) : sessions.map(s => (
                   <div key={s.id} className="bg-surface-900 border border-surface-800 rounded-xl p-5 hover:border-surface-700 transition-colors">
                     <div className="flex items-start justify-between">
-                      <div>
+                      <div className="flex-1 min-w-0 pr-4">
                         <h3 className="text-sm font-semibold text-surface-100">{s.title}</h3>
                         {s.description && <p className="text-xs text-surface-400 mt-1">{s.description}</p>}
+                        <div className="flex items-center gap-2 mt-3">
+                          {s.notes_id && (
+                            <button onClick={() => navigate(`/student/notes/${s.notes_id}`)} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-500/10 border border-primary-500/20 rounded-lg text-[10px] font-bold text-primary-400 hover:bg-primary-500/20 transition-all">
+                              <FileText className="w-3 h-3" /> View Notes
+                            </button>
+                          )}
+                          {s.recording_url && (
+                            <a href={s.recording_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[10px] font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all">
+                              <Play className="w-3 h-3" fill="currentColor" /> Play Recording
+                            </a>
+                          )}
+                        </div>
                       </div>
                       <span className="text-[10px] text-surface-500 shrink-0">{new Date(s.date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-
-            {(activeTab === 'notes' || activeTab === 'materials') && (
-              <>
-                <div className="mb-4 relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-500" />
-                  <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-                    placeholder={`Search ${activeTab}...`}
-                    className="w-full bg-surface-900 border border-surface-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-surface-100 focus:outline-none focus:border-primary-500" />
-                </div>
-                <div className="space-y-2">
-                  {filteredContent.length === 0 ? (
-                    <div className="text-center py-16 text-surface-500">
-                      <FileText className="w-10 h-10 mx-auto mb-3 text-surface-600" />
-                      <p className="text-sm">No {activeTab} available</p>
-                    </div>
-                  ) : filteredContent.map(c => (
-                    <div key={c.id} className="bg-surface-900 border border-surface-800 rounded-xl p-4 hover:border-surface-700 transition-colors flex items-center gap-3 cursor-pointer"
-                      onClick={() => { if (c.type === 'notes') navigate('/student/notes'); }}>
-                      {c.type === 'notes' ? <FileText className="w-5 h-5 text-blue-400 shrink-0" /> :
-                       c.type === 'video' ? <Video className="w-5 h-5 text-purple-400 shrink-0" /> :
-                       <BookOpen className="w-5 h-5 text-amber-400 shrink-0" />}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-surface-100 truncate">{c.title}</p>
-                        <p className="text-[10px] text-surface-500 mt-0.5">{c.type} · {new Date(c.created_at).toLocaleDateString()}</p>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-surface-600" />
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
           </div>
         </div>
       </div>

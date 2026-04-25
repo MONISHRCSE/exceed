@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { lecturesAPI, notesAPI } from '../../api'
+import { lecturesAPI, notesAPI, classesAPI } from '../../api'
 import {
   Mic, Square, Play, Pause, AlertCircle, Clock, CheckCircle2, ChevronDown,
   Radio, Activity, MessageSquare, Zap, Target, Edit3, Bookmark, Flag,
@@ -16,18 +16,16 @@ export default function RecordLecture() {
   const [status, setStatus] = useState<'idle' | 'recording' | 'paused' | 'stopped'>('idle')
   const [time, setTime] = useState(0)
   const [title, setTitle] = useState('')
-  const [selectedClass, setSelectedClass] = useState('Select Subject / Class')
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null)
   const [showClassDropdown, setShowClassDropdown] = useState(false)
   const [noiseLevel, setNoiseLevel] = useState(15) // percentage
+  const [myClasses, setMyClasses] = useState<any[]>([])
 
-  const classes = [
-    'CS401 - Machine Learning',
-    'CS301 - Data Structures',
-    'CS505 - Advanced Algorithms',
-    'CS202 - Database Systems',
-    'General Session'
-  ]
-  const [audioQuality, setAudioQuality] = useState('Good')
+  useEffect(() => {
+    classesAPI.my().then(setMyClasses).catch(() => setMyClasses([]))
+  }, [])
+
+  const audioQuality = 'Good'
   const [isSaved, setIsSaved] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [processing, setProcessing] = useState(false)
@@ -44,6 +42,9 @@ export default function RecordLecture() {
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const timeRef = useRef(0)
   const recognitionRef = useRef<any>(null)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<BlobPart[]>([])
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
   const waveformIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const [waveformBars, setWaveformBars] = useState<number[]>(Array(40).fill(10))
 
@@ -130,6 +131,14 @@ export default function RecordLecture() {
       }
     } else if (status === 'paused') {
       setWaveformBars(Array(40).fill(10))
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.pause()
+      }
+    } else if (status === 'stopped') {
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop()
+        mediaRecorderRef.current.stream.getTracks().forEach(t => t.stop())
+      }
     }
   }, [status])
 
@@ -140,14 +149,39 @@ export default function RecordLecture() {
     return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
   }
 
-  const canStart = title.trim() !== '' && selectedClass !== 'Select Subject / Class'
+  const canStart = title.trim() !== ''
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (!canStart) {
       alert('Please enter a lecture title and select a subject before starting.')
       return
     }
-    setStatus('recording')
+    
+    try {
+      if (!mediaRecorderRef.current) {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        const mediaRecorder = new MediaRecorder(stream)
+        audioChunksRef.current = []
+        mediaRecorder.ondataavailable = e => {
+          if (e.data.size > 0) audioChunksRef.current.push(e.data)
+        }
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+          setAudioBlob(blob)
+        }
+        mediaRecorderRef.current = mediaRecorder
+      }
+      
+      if (mediaRecorderRef.current.state === 'inactive') {
+        mediaRecorderRef.current.start()
+      } else if (mediaRecorderRef.current.state === 'paused') {
+        mediaRecorderRef.current.resume()
+      }
+      setStatus('recording')
+    } catch (err) {
+      console.error('Microphone access denied:', err)
+      alert('Microphone access is required to record a lecture.')
+    }
   }
   const handlePause = () => setStatus('paused')
   const handleStop = () => {
@@ -163,9 +197,9 @@ export default function RecordLecture() {
     }
     setProcessing(true)
     try {
-      const fullTitle = selectedClass && selectedClass !== 'Select Subject / Class' 
-        ? `[${selectedClass}] ${title || 'Untitled Lecture'}` 
-        : (title || 'Untitled Lecture')
+      const fullTitle = selectedClassId ? myClasses.find(c => c.id === selectedClassId)?.name 
+        ? `[${myClasses.find(c => c.id === selectedClassId)?.name}] ${title || 'Untitled Lecture'}` 
+        : (title || 'Untitled Lecture') : (title || 'Untitled Lecture')
         
       const token = localStorage.getItem('exceed_token')
       const lectureRes = await fetch('/api/lectures', {
@@ -177,14 +211,28 @@ export default function RecordLecture() {
       const lecture = await lectureRes.json()
 
       const fullText = transcript.map(t => t.text).join(' ')
-      await lecturesAPI.transcribe(lecture.id, fullText)
+      
+      let finalBlob = audioBlob;
+      if (!finalBlob && audioChunksRef.current.length > 0) {
+        finalBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+      }
 
-      const notesRes = await notesAPI.refine(lecture.id, fullText)
+      // Send audioBlob to use ElevenLabs Batch API; falls back to real-time fullText if missing
+      const transcribedLecture = await lecturesAPI.transcribe(lecture.id, { 
+        transcript: fullText, 
+        audioBlob: finalBlob 
+      })
+
+      const notesRes = await notesAPI.refine(lecture.id, transcribedLecture.transcript)
       
       if (!notesRes || !notesRes.id) throw new Error('Failed to generate notes')
 
       if (actionType === 'publish') {
-        await notesAPI.publish(notesRes.id)
+        if (selectedClassId) {
+          await notesAPI.publish(notesRes.id, [selectedClassId])
+        } else {
+          await notesAPI.publish(notesRes.id)
+        }
         navigate('/teacher')
       } else if (actionType === 'draft') {
         navigate('/teacher/notes')
@@ -221,7 +269,7 @@ export default function RecordLecture() {
                 onClick={() => status === 'idle' && setShowClassDropdown(!showClassDropdown)}
                 className={`flex items-center gap-1 transition-colors ${status === 'idle' ? 'hover:text-gray-300' : 'opacity-80 cursor-default'}`}
               >
-                {selectedClass} {status === 'idle' && <ChevronDown size={12} />}
+                {selectedClassId ? myClasses.find(c => c.id === selectedClassId)?.name : 'Select Subject / Class'} {status === 'idle' && <ChevronDown size={12} />}
               </button>
               <AnimatePresence>
                 {showClassDropdown && status === 'idle' && (
@@ -231,13 +279,19 @@ export default function RecordLecture() {
                     exit={{ opacity: 0, y: 5 }}
                     className="absolute top-full left-0 mt-2 w-56 bg-[#1a2235] border border-white/[0.08] rounded-xl shadow-xl z-50 overflow-hidden"
                   >
-                    {classes.map(c => (
+                    <button
+                      onClick={() => { setSelectedClassId(null); setShowClassDropdown(false); }}
+                      className="w-full text-left px-4 py-2.5 text-xs text-gray-400 hover:bg-white/[0.05] hover:text-white transition-colors border-b border-white/[0.05]"
+                    >
+                      None (General Session)
+                    </button>
+                    {myClasses.map(c => (
                       <button 
-                        key={c}
-                        onClick={() => { setSelectedClass(c); setShowClassDropdown(false); }}
+                        key={c.id}
+                        onClick={() => { setSelectedClassId(c.id); setShowClassDropdown(false); }}
                         className="w-full text-left px-4 py-2.5 text-xs text-gray-300 hover:bg-white/[0.05] hover:text-white transition-colors"
                       >
-                        {c}
+                        {c.name}
                       </button>
                     ))}
                   </motion.div>

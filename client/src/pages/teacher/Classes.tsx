@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { classesAPI } from '../../api';
 import {
   GraduationCap, Plus, X, Loader2, Users, Copy, CheckCircle2,
-  ChevronRight, BarChart3, BookOpen, Calendar, Upload, FileText
+  ChevronRight, BarChart3, BookOpen, Calendar, Upload, FileText, Play, Trash2
 } from 'lucide-react';
 
 export default function TeacherClassesPage() {
@@ -18,14 +18,7 @@ export default function TeacherClassesPage() {
   const [classDetail, setClassDetail] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
   const [sessions, setSessions] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'students' | 'sessions' | 'content' | 'analytics'>('students');
-
-  // Session/content creation
-  const [showAddSession, setShowAddSession] = useState(false);
-  const [sessionTitle, setSessionTitle] = useState('');
-  const [showAddContent, setShowAddContent] = useState(false);
-  const [contentTitle, setContentTitle] = useState('');
-  const [contentType, setContentType] = useState('notes');
+  const [activeTab, setActiveTab] = useState<'students' | 'sessions' | 'analytics'>('students');
 
   useEffect(() => {
     classesAPI.my().then(setClasses).catch(() => setClasses([])).finally(() => setLoading(false));
@@ -61,22 +54,34 @@ export default function TeacherClassesPage() {
     } catch { /* ignore */ }
   };
 
-  const handleAddSession = async () => {
-    if (!sessionTitle.trim() || !selectedClass) return;
+
+
+  const [uploading, setUploading] = useState<string | null>(null);
+
+  const handleUpload = async (sessionId: string, file: File) => {
+    if (!selectedClass) return;
+    setUploading(sessionId);
     try {
-      await classesAPI.createSession(selectedClass.id, { title: sessionTitle.trim() });
+      await classesAPI.uploadRecording(selectedClass.id, sessionId, file);
       const sess = await classesAPI.getSessions(selectedClass.id);
       setSessions(sess);
-    } catch { /* ignore */ }
-    setSessionTitle(''); setShowAddSession(false);
+    } catch (err) {
+      alert('Upload failed');
+    }
+    setUploading(null);
   };
 
-  const handleAddContent = async () => {
-    if (!contentTitle.trim() || !selectedClass) return;
+  const handleDeleteClass = async () => {
+    if (!selectedClass) return;
+    if (!window.confirm(`Are you sure you want to delete the class "${selectedClass.name}"? This will remove all students and sessions.`)) return;
     try {
-      await classesAPI.addContent(selectedClass.id, { title: contentTitle.trim(), type: contentType });
-    } catch { /* ignore */ }
-    setContentTitle(''); setShowAddContent(false);
+      await classesAPI.delete(selectedClass.id);
+      const updated = await classesAPI.my();
+      setClasses(updated);
+      setSelectedClass(null);
+    } catch (err: any) {
+      alert('Failed to delete class: ' + (err.message || 'Unknown error'));
+    }
   };
 
   // ── Class Detail View ──
@@ -97,12 +102,18 @@ export default function TeacherClassesPage() {
                 <span className="text-xs text-surface-500">{stats.totalStudents} students</span>
               </div>
             </div>
+            <button 
+              onClick={handleDeleteClass}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 rounded-lg text-xs font-semibold transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5" /> Delete Class
+            </button>
           </div>
         </div>
 
         {/* Tabs */}
         <div className="shrink-0 px-8 pt-4 flex gap-1 border-b border-surface-800">
-          {(['students', 'sessions', 'content', 'analytics'] as const).map(tab => (
+          {(['students', 'sessions', 'analytics'] as const).map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors capitalize ${
                 activeTab === tab ? 'bg-surface-900 text-surface-50 border border-b-0 border-surface-700' : 'text-surface-400 hover:text-surface-200'
@@ -139,36 +150,49 @@ export default function TeacherClassesPage() {
             {/* Sessions Tab */}
             {activeTab === 'sessions' && (
               <div>
-                <div className="flex justify-end mb-4">
-                  <button onClick={() => setShowAddSession(true)} className="px-3 py-2 bg-primary-600 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5">
-                    <Plus className="w-3.5 h-3.5" /> Add Session
-                  </button>
-                </div>
                 <div className="space-y-3">
                   {sessions.length === 0 ? (
-                    <div className="text-center py-16 text-surface-500"><Calendar className="w-10 h-10 mx-auto mb-3 text-surface-600" /><p className="text-sm">No sessions created</p></div>
+                    <div className="text-center py-16 text-surface-500">
+                      <Calendar className="w-10 h-10 mx-auto mb-3 text-surface-600" />
+                      <p className="text-sm">No lecture sessions yet</p>
+                      <p className="text-xs mt-1">Record a lecture and publish it to this class to create a session.</p>
+                    </div>
                   ) : sessions.map(s => (
                     <div key={s.id} className="bg-surface-900 border border-surface-800 rounded-xl p-4">
-                      <h3 className="text-sm font-semibold text-surface-100">{s.title}</h3>
-                      {s.description && <p className="text-xs text-surface-400 mt-1">{s.description}</p>}
-                      <p className="text-[10px] text-surface-500 mt-2">{new Date(s.date).toLocaleDateString()}</p>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm font-semibold text-surface-100">{s.title}</h3>
+                          {s.description && <p className="text-xs text-surface-400 mt-1">{s.description}</p>}
+                          <p className="text-[10px] text-surface-500 mt-2">{new Date(s.date).toLocaleDateString()}</p>
+                        </div>
+                        <div className="shrink-0 flex items-center gap-2">
+                          {s.notes_id && (
+                            <button onClick={() => window.location.href = `/teacher/notes/${s.notes_id}`} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-500/10 border border-primary-500/20 rounded-lg text-[10px] font-bold text-primary-400 hover:bg-primary-500/20 transition-all">
+                              <FileText className="w-3 h-3" /> View Notes
+                            </button>
+                          )}
+                          {s.recording_url ? (
+                            <a href={s.recording_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-[10px] font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all">
+                              <Play className="w-3 h-3" fill="currentColor" /> Play Recording
+                            </a>
+                          ) : (
+                            <label className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-800 border border-surface-700 rounded-lg text-[10px] font-bold text-surface-300 hover:bg-surface-700 cursor-pointer transition-all">
+                              {uploading === s.id ? <><Loader2 className="w-3 h-3 animate-spin" /> Uploading...</> : <><Upload className="w-3 h-3" /> Upload Recording</>}
+                              <input type="file" className="hidden" accept="video/*,audio/*" onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) handleUpload(s.id, file);
+                              }} disabled={!!uploading} />
+                            </label>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Content Tab */}
-            {activeTab === 'content' && (
-              <div>
-                <div className="flex justify-end mb-4">
-                  <button onClick={() => setShowAddContent(true)} className="px-3 py-2 bg-primary-600 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5">
-                    <Upload className="w-3.5 h-3.5" /> Add Content
-                  </button>
-                </div>
-                <p className="text-sm text-surface-400">Content items will appear here after being added.</p>
-              </div>
-            )}
+
 
             {/* Analytics Tab */}
             {activeTab === 'analytics' && (
@@ -232,39 +256,6 @@ export default function TeacherClassesPage() {
           </div>
         </div>
 
-        {/* Add Session Modal */}
-        {showAddSession && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-surface-900 border border-surface-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
-              <h2 className="text-lg font-bold text-surface-50 mb-4">New Session</h2>
-              <input value={sessionTitle} onChange={e => setSessionTitle(e.target.value)} placeholder="Session title"
-                className="w-full bg-surface-950 border border-surface-700 rounded-xl px-4 py-2.5 text-sm text-surface-100 focus:outline-none focus:border-primary-500 mb-4" />
-              <div className="flex gap-3">
-                <button onClick={() => setShowAddSession(false)} className="flex-1 py-2.5 bg-surface-800 text-surface-200 text-sm rounded-xl">Cancel</button>
-                <button onClick={handleAddSession} className="flex-1 py-2.5 bg-primary-600 text-white text-sm rounded-xl">Create</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Add Content Modal */}
-        {showAddContent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-surface-900 border border-surface-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl">
-              <h2 className="text-lg font-bold text-surface-50 mb-4">Add Content</h2>
-              <input value={contentTitle} onChange={e => setContentTitle(e.target.value)} placeholder="Content title"
-                className="w-full bg-surface-950 border border-surface-700 rounded-xl px-4 py-2.5 text-sm text-surface-100 focus:outline-none focus:border-primary-500 mb-3" />
-              <select value={contentType} onChange={e => setContentType(e.target.value)}
-                className="w-full bg-surface-950 border border-surface-700 rounded-xl px-4 py-2.5 text-sm text-surface-100 focus:outline-none focus:border-primary-500 mb-4">
-                <option value="notes">Notes</option><option value="pdf">PDF</option><option value="video">Video</option>
-              </select>
-              <div className="flex gap-3">
-                <button onClick={() => setShowAddContent(false)} className="flex-1 py-2.5 bg-surface-800 text-surface-200 text-sm rounded-xl">Cancel</button>
-                <button onClick={handleAddContent} className="flex-1 py-2.5 bg-primary-600 text-white text-sm rounded-xl">Add</button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   }

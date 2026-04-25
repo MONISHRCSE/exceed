@@ -177,4 +177,18 @@ router.get('/:id/students', authMiddleware, (req, res) => {
   res.json(students);
 });
 
+// DELETE /api/classes/:id — Delete a class
+router.delete('/:id', authMiddleware, (req, res) => {
+  const cls = findOne('classes', c => c.id === req.params.id && c.teacher_id === req.user.id);
+  if (!cls) return res.status(404).json({ message: 'Class not found' });
+  
+  // Clean up associated records
+  remove('classes', c => c.id === req.params.id);
+  remove('class_members', m => m.class_id === req.params.id);
+  remove('class_sessions', s => s.class_id === req.params.id);
+  remove('class_content', c => c.class_id === req.params.id);
+  
+  res.json({ message: 'Class deleted successfully' });
+});
+
 module.exports = router;

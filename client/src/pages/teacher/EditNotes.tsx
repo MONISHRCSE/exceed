@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { notesAPI } from '../../api'
+import { notesAPI, classesAPI } from '../../api'
 import {
   FileText,
   Globe,
@@ -54,8 +54,13 @@ export default function EditNotes() {
     { question: 'What does CNN stand for?', options: ['Central Neural Network', 'Convolutional Neural Network', 'Connected Node Network', 'Cascading Neuron Net'], correct: 1, explanation: 'CNNs use convolution layers for spatial feature extraction.' },
   ])
 
+  const [showPublishModal, setShowPublishModal] = useState(false)
+  const [classes, setClasses] = useState<any[]>([])
+  const [selectedClassIds, setSelectedClassIds] = useState<string[]>([])
+
   useEffect(() => {
     if (id) notesAPI.get(id).then(n => { setNotes(n); setContent(n.content || '') }).catch(() => navigate('/teacher/notes'))
+    classesAPI.my().then(setClasses).catch(() => setClasses([]))
   }, [id])
 
   const showMsg = (msg: string, type: 'success' | 'error' = 'success') => {
@@ -73,9 +78,10 @@ export default function EditNotes() {
   const handlePublish = async () => {
     setPublishing(true)
     try {
-      await notesAPI.publish(id!)
+      await notesAPI.publish(id!, selectedClassIds.length > 0 ? selectedClassIds : undefined)
       showMsg('Published successfully')
       setNotes((n: any) => ({ ...n, published_at: new Date().toISOString() }))
+      setShowPublishModal(false)
     } catch { showMsg('Publish failed', 'error') }
     finally { setPublishing(false) }
   }
@@ -135,13 +141,49 @@ export default function EditNotes() {
             <Save size={14} />
             {saving ? 'Saving...' : 'Save Draft'}
           </button>
-          <button onClick={handlePublish} disabled={publishing || !!notes.published_at}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
-            style={{ background: notes.published_at ? 'rgba(16,185,129,0.15)' : 'linear-gradient(135deg, #10B981, #059669)', color: notes.published_at ? '#34D399' : 'white' }}>
-            {notes.published_at ? <><CheckCircle2 size={14} /> Published</> : <><Send size={14} /> {publishing ? 'Publishing...' : 'Publish'}</>}
+          <button onClick={() => setShowPublishModal(true)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold text-white transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white' }}>
+            <Send size={14} /> Publish to Classes
           </button>
         </div>
       </div>
+
+      {showPublishModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#0A0F1F] border border-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl">
+            <h2 className="text-lg font-bold text-white mb-2">Publish Notes</h2>
+            <p className="text-sm text-gray-400 mb-4">Select the classes you want to publish these notes to. A class session will be created automatically.</p>
+            
+            <div className="space-y-2 mb-6 max-h-60 overflow-y-auto">
+              {classes.length === 0 ? (
+                <p className="text-sm text-gray-500 py-4 text-center">No classes available. Create a class first.</p>
+              ) : classes.map(cls => (
+                <label key={cls.id} className="flex items-center gap-3 p-3 rounded-lg border border-gray-800 bg-white/[0.02] cursor-pointer hover:bg-white/[0.04]">
+                  <input type="checkbox" 
+                    checked={selectedClassIds.includes(cls.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) setSelectedClassIds([...selectedClassIds, cls.id])
+                      else setSelectedClassIds(selectedClassIds.filter(id => id !== cls.id))
+                    }}
+                    className="rounded border-gray-600 text-emerald-500 focus:ring-emerald-500/20 bg-transparent"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-white">{cls.name}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setShowPublishModal(false)} className="flex-1 py-2.5 bg-gray-800 text-gray-300 text-sm font-medium rounded-xl hover:bg-gray-700 transition-colors">Cancel</button>
+              <button onClick={handlePublish} disabled={publishing} className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-xl transition-colors disabled:opacity-50">
+                {publishing ? 'Publishing...' : `Publish to ${selectedClassIds.length} class${selectedClassIds.length !== 1 ? 'es' : ''}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Status Message */}
       {message && (

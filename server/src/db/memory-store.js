@@ -5,9 +5,13 @@
  */
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const path = require('path');
+
+const DB_FILE = path.join(__dirname, 'db.json');
 
 // ── In-Memory Tables ──
-const data = {
+let data = {
   users: [],
   lectures: [],
   notes: [],
@@ -27,8 +31,34 @@ const data = {
   class_content: [],
 };
 
+function loadFromDisk() {
+  if (fs.existsSync(DB_FILE)) {
+    try {
+      const fileData = fs.readFileSync(DB_FILE, 'utf8');
+      data = JSON.parse(fileData);
+      return true;
+    } catch (e) {
+      console.error('Failed to load db.json, starting fresh');
+    }
+  }
+  return false;
+}
+
+function saveToDisk() {
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.error('Failed to save to db.json');
+  }
+}
+
 // ── Seed Data ──
 async function seedMemoryStore() {
+  if (loadFromDisk()) {
+    console.log('Loaded database from db.json');
+    return;
+  }
+  
   const teacherHash = await bcrypt.hash('password123', 10);
   const studentHash = await bcrypt.hash('password123', 10);
 
@@ -95,6 +125,7 @@ async function seedMemoryStore() {
     );
   }
 
+  saveToDisk();
   console.log('In-memory store seeded with demo data.');
 }
 
@@ -110,18 +141,26 @@ function findOne(table, predicate) {
 function insert(table, record) {
   if (!record.id) record.id = uuidv4();
   data[table].push(record);
+  saveToDisk();
   return record;
 }
 
 function update(table, predicate, updates) {
   const item = data[table].find(predicate);
-  if (item) Object.assign(item, updates);
+  if (item) {
+    Object.assign(item, updates);
+    saveToDisk();
+  }
   return item;
 }
 
 function remove(table, predicate) {
   const idx = data[table].findIndex(predicate);
-  if (idx >= 0) return data[table].splice(idx, 1)[0];
+  if (idx >= 0) {
+    const removed = data[table].splice(idx, 1)[0];
+    saveToDisk();
+    return removed;
+  }
   return null;
 }
 

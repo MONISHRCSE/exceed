@@ -12,9 +12,21 @@ router.post('/refine', authMiddleware, (req, res) => {
     if (!lecture) return res.status(404).json({ message: 'Lecture not found' });
 
     const title = lecture.title;
-    const sentences = (transcript || '').split(/[.!?]+/).filter(s => s.trim());
-    let refined = `# ${title}\n\n## Overview\n${sentences.slice(0, 2).join('. ').trim()}.\n\n## Key Concepts\n`;
-    sentences.slice(2).forEach(s => { refined += `- ${s.trim()}\n`; });
+    let rawSentences = (transcript || '').split(/[.!?\n]+/).filter(s => s.trim());
+    if (rawSentences.length <= 2 && (transcript || '').length > 60) {
+      // Force split long run-on transcripts so we can generate mock key concepts
+      rawSentences = (transcript || '').split(/, | and | so | because | then /i).filter(s => s.trim());
+    }
+    
+    let refined = `# ${title}\n\n## Overview\n${rawSentences.slice(0, 2).join('. ').trim()}.\n\n## Key Concepts\n`;
+    if (rawSentences.length > 2) {
+      rawSentences.slice(2).forEach(s => { refined += `- ${s.trim()}\n`; });
+    } else if (rawSentences.length > 0) {
+      refined += `- ${rawSentences[0].trim()}\n`;
+    } else {
+      refined += `- No key concepts identified.\n`;
+    }
+    
     refined += `\n## Summary\nThis lecture covered the fundamentals of ${title.toLowerCase()}.`;
 
     const notes = insert('notes', {
@@ -81,10 +93,47 @@ router.post('/:id/translate', authMiddleware, (req, res) => {
 
 // POST /api/notes/:id/publish
 router.post('/:id/publish', authMiddleware, (req, res) => {
+  const { class_ids } = req.body || {};
   const notes = update('notes', n => n.id === req.params.id && n.teacher_id === req.user.id,
     { published_at: new Date().toISOString() });
   if (!notes) return res.status(404).json({ message: 'Notes not found' });
+
+  if (Array.isArray(class_ids)) {
+    class_ids.forEach(cid => {
+      const cls = findOne('classes', c => c.id === cid && c.teacher_id === req.user.id);
+      if (cls) {
+        // Prevent duplicate sessions for the same note in the same class
+        const existingSession = findOne('class_sessions', s => s.class_id === cls.id && s.notes_id === notes.id);
+        if (!existingSession) {
+          insert('class_sessions', {
+            class_id: cls.id,
+            notes_id: notes.id,
+            lecture_id: notes.lecture_id,
+            title: notes.title,
+            description: 'Auto-generated from recorded lecture',
+            date: new Date().toISOString(),
+            status: 'active',
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
+    });
+  }
+  
   res.json(notes);
+});
+
+// DELETE /api/notes/:id
+router.delete('/:id', authMiddleware, (req, res) => {
+  const notes = findOne('notes', n => n.id === req.params.id && n.teacher_id === req.user.id);
+  if (!notes) return res.status(404).json({ message: 'Notes not found' });
+
+  // Clean up associated translations and class sessions
+  const { remove } = require('../db/memory-store');
+  remove('notes', n => n.id === req.params.id || n.parent_notes_id === req.params.id);
+  remove('class_sessions', s => s.notes_id === req.params.id);
+  
+  res.json({ message: 'Notes deleted successfully' });
 });
 
 module.exports = router;

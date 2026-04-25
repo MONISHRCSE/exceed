@@ -28,11 +28,8 @@ const navItems = [
   { to: '/teacher/record', icon: Radio, label: 'Live Lecture' },
   { to: '/teacher/notes', icon: FileText, label: 'Notes Studio' },
   { to: '/teacher/students', icon: Users, label: 'Students' },
-  { to: '/teacher/assessments', icon: ClipboardCheck, label: 'Assessments' },
   { to: '/teacher/doubts', icon: MessageCircleQuestion, label: 'Doubts & Queries', badge: 3 },
   { to: '/teacher/analytics', icon: BarChart3, label: 'Analytics' },
-  { to: '/teacher/planner', icon: CalendarDays, label: 'Planner' },
-  { to: '/teacher/resources', icon: FolderOpen, label: 'Resources' },
   { to: '/teacher/classes', icon: GraduationCap, label: 'Classes' },
   { to: '/teacher/settings', icon: Settings, label: 'Settings' },
 ]
@@ -42,11 +39,8 @@ const pageTitles: Record<string, { title: string; subtitle: string }> = {
   '/teacher/record': { title: 'Live Lecture', subtitle: 'Record, transcribe, and process in real-time' },
   '/teacher/notes': { title: 'Notes Studio', subtitle: 'Refine, translate, and publish learning content' },
   '/teacher/students': { title: 'Students', subtitle: 'Monitor engagement and academic performance' },
-  '/teacher/assessments': { title: 'Assessments', subtitle: 'Quizzes, flashcards, and evaluation tools' },
   '/teacher/doubts': { title: 'Doubts & Queries', subtitle: 'Review and respond to student questions' },
   '/teacher/analytics': { title: 'Analytics', subtitle: 'Content effectiveness and learning insights' },
-  '/teacher/planner': { title: 'Planner', subtitle: 'Schedule lectures and manage deadlines' },
-  '/teacher/resources': { title: 'Resources', subtitle: 'Teaching materials and file management' },
   '/teacher/settings': { title: 'Settings', subtitle: 'Configure workspace and preferences' },
   '/teacher/classes': { title: 'Classes', subtitle: 'Create and manage your classes' },
 }

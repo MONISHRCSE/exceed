@@ -1,0 +1,392 @@
+{
+  "users": [
+    {
+      "id": "9148c4f3-9ad2-4ed6-9cf1-848fa24b348a",
+      "email": "teacher@exceed.com",
+      "password_hash": "$2a$10$4waBj2HlsSeZ7pzmfX8ViOrZtD.QXsKq.pkiHb8BlonByyHa1AvcS",
+      "role": "teacher",
+      "first_name": "Dr. Sarah",
+      "last_name": "Chen",
+      "created_at": "2026-04-25T19:23:43.145Z",
+      "last_login": null
+    },
+    {
+      "id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "email": "student@exceed.com",
+      "password_hash": "$2a$10$ykC9MSSog5ji2aM5O2ECx.46CfvdLlrzm62qc398Q43Plq0X2Z2pK",
+      "role": "student",
+      "first_name": "Alex",
+      "last_name": "Johnson",
+      "created_at": "2026-04-25T19:23:43.146Z",
+      "last_login": null
+    },
+    {
+      "id": "e3edcb15-3f34-4ad0-b45b-917e88fea47e",
+      "email": "student2@exceed.com",
+      "password_hash": "$2a$10$ykC9MSSog5ji2aM5O2ECx.46CfvdLlrzm62qc398Q43Plq0X2Z2pK",
+      "role": "student",
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "created_at": "2026-04-25T19:23:43.146Z",
+      "last_login": null
+    },
+    {
+      "id": "f0acbb7a-862b-48f9-b98e-d354edb64249",
+      "email": "student3@exceed.com",
+      "password_hash": "$2a$10$ykC9MSSog5ji2aM5O2ECx.46CfvdLlrzm62qc398Q43Plq0X2Z2pK",
+      "role": "student",
+      "first_name": "Raj",
+      "last_name": "Patel",
+      "created_at": "2026-04-25T19:23:43.146Z",
+      "last_login": null
+    }
+  ],
+  "lectures": [
+    {
+      "id": "ab4bc7ab-9467-468a-84ec-947faf865223",
+      "teacher_id": "9148c4f3-9ad2-4ed6-9cf1-848fa24b348a",
+      "title": "Introduction to Machine Learning",
+      "audio_file_path": null,
+      "transcript": "Machine learning is a subset of artificial intelligence that focuses on building systems that learn from data. There are three main types: supervised learning, unsupervised learning, and reinforcement learning. Supervised learning uses labeled data to train models. Common algorithms include linear regression, decision trees, and neural networks.",
+      "recorded_at": "2026-04-25T19:23:43.146Z",
+      "duration": 2400,
+      "status": "completed"
+    },
+    {
+      "id": "65b93829-8cfd-4760-87a4-dc38c33b29df",
+      "teacher_id": "9148c4f3-9ad2-4ed6-9cf1-848fa24b348a",
+      "title": "Data Structures: Trees and Graphs",
+      "audio_file_path": null,
+      "transcript": "Trees are hierarchical data structures with a root node and child nodes. Binary trees have at most two children per node. Binary search trees maintain ordering. Graphs consist of vertices and edges, and can be directed or undirected. Common traversal methods include BFS and DFS.",
+      "recorded_at": "2026-04-25T19:23:43.146Z",
+      "duration": 1800,
+      "status": "completed"
+    }
+  ],
+  "notes": [
+    {
+      "id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "lecture_id": "ab4bc7ab-9467-468a-84ec-947faf865223",
+      "teacher_id": "9148c4f3-9ad2-4ed6-9cf1-848fa24b348a",
+      "title": "Introduction to Machine Learning",
+      "content": "# Introduction to Machine Learning\n\n## What is Machine Learning?\nMachine learning is a **subset of artificial intelligence** that focuses on building systems that learn from data.\n\n## Types of Machine Learning\n\n### 1. Supervised Learning\n- Uses labeled training data\n- Maps input to output\n- Examples: classification, regression\n\n### 2. Unsupervised Learning\n- Works with unlabeled data\n- Finds hidden patterns\n- Examples: clustering, dimensionality reduction\n\n### 3. Reinforcement Learning\n- Learns through trial and error\n- Agent interacts with environment\n- Uses rewards and penalties\n\n## Key Algorithms\n- **Linear Regression**: For continuous predictions\n- **Decision Trees**: For classification tasks\n- **Neural Networks**: For complex pattern recognition\n\n## Key Concepts\n- Training data vs test data\n- Overfitting and underfitting\n- Feature engineering\n- Model evaluation metrics",
+      "language": "en",
+      "is_original": true,
+      "parent_notes_id": null,
+      "published_at": "2026-04-25T19:23:43.146Z",
+      "version": 1,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "lecture_id": "65b93829-8cfd-4760-87a4-dc38c33b29df",
+      "teacher_id": "9148c4f3-9ad2-4ed6-9cf1-848fa24b348a",
+      "title": "Data Structures: Trees and Graphs",
+      "content": "# Data Structures: Trees and Graphs\n\n## Trees\nTrees are **hierarchical data structures** with a root node and child nodes.\n\n### Binary Trees\n- At most two children per node\n- Left child and right child\n\n### Binary Search Tree (BST)\n- Left subtree values < parent\n- Right subtree values > parent\n- O(log n) average search time\n\n## Graphs\nGraphs consist of **vertices** (nodes) and **edges** (connections).\n\n### Types\n- **Directed**: Edges have direction\n- **Undirected**: Edges are bidirectional\n- **Weighted**: Edges have values\n\n### Traversal Methods\n- **BFS** (Breadth-First Search): Level by level\n- **DFS** (Depth-First Search): Deep first, then backtrack",
+      "language": "en",
+      "is_original": true,
+      "parent_notes_id": null,
+      "published_at": "2026-04-25T19:23:43.146Z",
+      "version": 1,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "notes_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "title": "Machine Learning Quiz",
+      "question_count": 4,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "a9a77647-0b25-4100-906c-d4ca20e873e1",
+      "notes_id": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "title": "Trees & Graphs Quiz",
+      "question_count": 3,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    }
+  ],
+  "questions": [
+    {
+      "id": "eae5798f-4da2-4873-950b-edc90dc1cdde",
+      "quiz_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "question_text": "What is machine learning?",
+      "options": [
+        "A programming language",
+        "A subset of AI that learns from data",
+        "A database system",
+        "A web framework"
+      ],
+      "correct_answer": 1,
+      "explanation": "Machine learning is a subset of artificial intelligence focused on learning from data.",
+      "difficulty": "easy"
+    },
+    {
+      "id": "b443bcae-656a-4c73-9f01-7cb4f5880eb8",
+      "quiz_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "question_text": "Which type of ML uses labeled data?",
+      "options": [
+        "Unsupervised",
+        "Reinforcement",
+        "Supervised",
+        "None of these"
+      ],
+      "correct_answer": 2,
+      "explanation": "Supervised learning uses labeled training data to learn mappings.",
+      "difficulty": "easy"
+    },
+    {
+      "id": "444cd3f2-1486-4fb3-8fac-5fd9b8e95061",
+      "quiz_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "question_text": "What is overfitting?",
+      "options": [
+        "Too simple model",
+        "Model memorizes training data",
+        "Fast training",
+        "Low accuracy"
+      ],
+      "correct_answer": 1,
+      "explanation": "Overfitting occurs when a model learns noise in training data.",
+      "difficulty": "medium"
+    },
+    {
+      "id": "2c25e455-a47d-4368-8022-f119a3abef67",
+      "quiz_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "question_text": "Which algorithm is best for complex patterns?",
+      "options": [
+        "Linear Regression",
+        "Decision Trees",
+        "Neural Networks",
+        "K-means"
+      ],
+      "correct_answer": 2,
+      "explanation": "Neural networks excel at recognizing complex patterns.",
+      "difficulty": "medium"
+    },
+    {
+      "id": "65de784a-3572-444b-8cd4-03f2fd95e3f1",
+      "quiz_id": "a9a77647-0b25-4100-906c-d4ca20e873e1",
+      "question_text": "How many children can a binary tree node have?",
+      "options": [
+        "1",
+        "At most 2",
+        "3",
+        "Unlimited"
+      ],
+      "correct_answer": 1,
+      "explanation": "Binary trees have at most 2 children per node.",
+      "difficulty": "easy"
+    },
+    {
+      "id": "15af4d58-2611-4fc4-abbe-0bd612506ff5",
+      "quiz_id": "a9a77647-0b25-4100-906c-d4ca20e873e1",
+      "question_text": "What does BFS stand for?",
+      "options": [
+        "Binary Find Search",
+        "Breadth-First Search",
+        "Best-First Sort",
+        "Backward Full Scan"
+      ],
+      "correct_answer": 1,
+      "explanation": "BFS = Breadth-First Search, explores level by level.",
+      "difficulty": "easy"
+    },
+    {
+      "id": "d3da6fb9-b049-449e-af32-35ee3d1d9b06",
+      "quiz_id": "a9a77647-0b25-4100-906c-d4ca20e873e1",
+      "question_text": "In a BST, left subtree values are?",
+      "options": [
+        "Greater than parent",
+        "Equal to parent",
+        "Less than parent",
+        "Random"
+      ],
+      "correct_answer": 2,
+      "explanation": "In a BST, left child values are always less than the parent.",
+      "difficulty": "medium"
+    }
+  ],
+  "quiz_results": [],
+  "flashcards": [
+    {
+      "id": "f140b2ba-c9d6-4d37-b1fb-7a953947b611",
+      "notes_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "front": "What is supervised learning?",
+      "back": "A type of ML that uses labeled data to train models to map inputs to outputs.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "1cf1222a-26de-4ba0-8083-73d8be251bbe",
+      "notes_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "front": "What is overfitting?",
+      "back": "When a model learns the training data too well, including noise, and performs poorly on new data.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "793d85bc-fad5-494e-b862-30d7b1b12298",
+      "notes_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "front": "Name three ML algorithms",
+      "back": "Linear Regression, Decision Trees, Neural Networks",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "ba08130d-adbb-4ee8-a9ff-fd9984638dae",
+      "notes_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "front": "What is reinforcement learning?",
+      "back": "ML approach where an agent learns through trial and error using rewards and penalties.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "5136c40a-852c-4586-b2e5-78a5f54eff96",
+      "notes_id": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "front": "What is a binary search tree?",
+      "back": "A binary tree where left subtree values < parent and right subtree values > parent.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "a96da2b3-5ae8-4378-82eb-25735295d9e8",
+      "notes_id": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "front": "Difference between BFS and DFS?",
+      "back": "BFS explores level by level (breadth). DFS goes deep first, then backtracks.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "1f0c47dc-79e2-4892-b8c9-d8198c0f3755",
+      "notes_id": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "front": "What is a directed graph?",
+      "back": "A graph where edges have direction, meaning they go from one vertex to another.",
+      "reviewed": false,
+      "created_at": "2026-04-25T19:23:43.146Z"
+    }
+  ],
+  "planner_activities": [
+    {
+      "id": "5aebce47-d243-435c-baed-c7926e4bea8c",
+      "student_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "type": "notes",
+      "content_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "title": "Review: Machine Learning",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 15,
+      "is_auto_generated": true
+    },
+    {
+      "id": "5920206e-1a72-4480-8e56-6260e7ad753a",
+      "student_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "type": "quiz",
+      "content_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "title": "Take ML Quiz",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 25,
+      "is_auto_generated": true
+    },
+    {
+      "id": "6d5d23c3-e6d6-4848-8f4c-4388cfc211e1",
+      "student_id": "e3edcb15-3f34-4ad0-b45b-917e88fea47e",
+      "type": "notes",
+      "content_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "title": "Review: Machine Learning",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 15,
+      "is_auto_generated": true
+    },
+    {
+      "id": "3b1bfea5-cf55-49f0-9195-12f29f976685",
+      "student_id": "e3edcb15-3f34-4ad0-b45b-917e88fea47e",
+      "type": "quiz",
+      "content_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "title": "Take ML Quiz",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 25,
+      "is_auto_generated": true
+    },
+    {
+      "id": "c2243dd1-9549-4e42-93ae-a04bf02ea13e",
+      "student_id": "f0acbb7a-862b-48f9-b98e-d354edb64249",
+      "type": "notes",
+      "content_id": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "title": "Review: Machine Learning",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 15,
+      "is_auto_generated": true
+    },
+    {
+      "id": "222f365f-5336-4c58-9f2c-1681ebbd89fe",
+      "student_id": "f0acbb7a-862b-48f9-b98e-d354edb64249",
+      "type": "quiz",
+      "content_id": "5c1b7d1c-f6ba-4e12-97fd-2251abe997a8",
+      "title": "Take ML Quiz",
+      "description": "",
+      "scheduled_date": "2026-04-25",
+      "completed": false,
+      "completed_at": null,
+      "xp_reward": 25,
+      "is_auto_generated": true
+    }
+  ],
+  "doubts": [],
+  "progress": [
+    {
+      "id": "3542a09b-a602-4335-ac12-a0878092864a",
+      "student_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "total_xp": 170,
+      "level": 1,
+      "notes_viewed": 0,
+      "quizzes_completed": 0,
+      "flashcards_reviewed": 6,
+      "average_quiz_score": 86,
+      "last_activity_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "7fd47ef4-7e21-4efa-abc2-a4828c0cfae4",
+      "student_id": "e3edcb15-3f34-4ad0-b45b-917e88fea47e",
+      "total_xp": 246,
+      "level": 1,
+      "notes_viewed": 0,
+      "quizzes_completed": 2,
+      "flashcards_reviewed": 1,
+      "average_quiz_score": 85,
+      "last_activity_at": "2026-04-25T19:23:43.146Z"
+    },
+    {
+      "id": "3eed587d-8952-4a95-be44-ca354874cc1a",
+      "student_id": "f0acbb7a-862b-48f9-b98e-d354edb64249",
+      "total_xp": 267,
+      "level": 1,
+      "notes_viewed": 2,
+      "quizzes_completed": 2,
+      "flashcards_reviewed": 1,
+      "average_quiz_score": 62,
+      "last_activity_at": "2026-04-25T19:23:43.146Z"
+    }
+  ],
+  "attempt_logs": [],
+  "concept_mastery": [],
+  "study_streaks": [],
+  "classes": [],
+  "class_members": [],
+  "class_sessions": [],
+  "class_content": []
+}

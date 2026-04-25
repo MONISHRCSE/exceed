@@ -58,8 +58,17 @@ export const lecturesAPI = {
   },
   list: () => request<any[]>('/lectures'),
   get: (id: string) => request<any>(`/lectures/${id}`),
-  transcribe: (id: string, transcript: string) =>
-    request<any>(`/lectures/${id}/transcribe`, { method: 'POST', body: { transcript } }),
+  transcribe: (id: string, data: { transcript?: string; audioBlob?: Blob }) => {
+    const formData = new FormData()
+    if (data.transcript) formData.append('transcript', data.transcript)
+    if (data.audioBlob) formData.append('audio', data.audioBlob, 'recording.webm')
+    const token = localStorage.getItem('exceed_token')
+    return fetch(`${API_BASE}/lectures/${id}/transcribe`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: formData,
+    }).then(r => r.json())
+  },
 }
 
 // ── Notes API ──
@@ -70,10 +79,12 @@ export const notesAPI = {
     request<any>(`/notes/${id}${language ? `?language=${language}` : ''}`),
   update: (id: string, content: string) =>
     request<any>(`/notes/${id}`, { method: 'PUT', body: { content } }),
+  delete: (id: string) =>
+    request<any>(`/notes/${id}`, { method: 'DELETE' }),
   translate: (id: string, languages: string[]) =>
     request<any>(`/notes/${id}/translate`, { method: 'POST', body: { languages } }),
-  publish: (id: string) =>
-    request<any>(`/notes/${id}/publish`, { method: 'POST' }),
+  publish: (id: string, classIds?: string[]) =>
+    request<any>(`/notes/${id}/publish`, { method: 'POST', body: classIds ? { class_ids: classIds } : {} }),
   listForStudent: () => request<any[]>('/notes/student'),
   listForTeacher: () => request<any[]>('/notes/teacher'),
 }
@@ -206,6 +217,8 @@ export const classesAPI = {
     request<any[]>('/classes/my'),
   get: (id: string) =>
     request<any>(`/classes/${id}`),
+  delete: (id: string) =>
+    request<any>(`/classes/${id}`, { method: 'DELETE' }),
   createSession: (id: string, data: { title: string; description?: string; date?: string }) =>
     request<any>(`/classes/${id}/session`, { method: 'POST', body: data }),
   getSessions: (id: string) =>

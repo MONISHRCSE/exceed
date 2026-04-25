@@ -13,9 +13,7 @@ import EditNotes from './pages/teacher/EditNotes'
 import TeacherDoubts from './pages/teacher/Doubts'
 import TeacherAnalytics from './pages/teacher/Analytics'
 import StudentMonitor from './pages/teacher/StudentMonitor'
-import Assessments from './pages/teacher/Assessments'
-import Planner from './pages/teacher/Planner'
-import Resources from './pages/teacher/Resources'
+
 import Settings from './pages/teacher/Settings'
 import TeacherClasses from './pages/teacher/Classes'
 
@@ -76,9 +74,7 @@ export default function App() {
         <Route path="doubts" element={<TeacherDoubts />} />
         <Route path="analytics" element={<TeacherAnalytics />} />
         <Route path="students" element={<StudentMonitor />} />
-        <Route path="assessments" element={<Assessments />} />
-        <Route path="planner" element={<Planner />} />
-        <Route path="resources" element={<Resources />} />
+
         <Route path="settings" element={<Settings />} />
         <Route path="classes" element={<TeacherClasses />} />
       </Route>
