@@ -18,6 +18,9 @@ const data = {
   planner_activities: [],
   doubts: [],
   progress: [],
+  attempt_logs: [],
+  concept_mastery: [],
+  study_streaks: [],
 };
 
 // ── Seed Data ──

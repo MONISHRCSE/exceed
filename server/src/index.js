@@ -16,6 +16,7 @@ const progressRoutes = require('./routes/progress');
 const analyticsRoutes = require('./routes/analytics');
 const aiRoutes = require('./routes/ai');
 const practiceRoutes = require('./routes/practice');
+const intelligenceRoutes = require('./routes/intelligence');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -37,6 +38,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/practice', practiceRoutes);
+app.use('/api/intelligence', intelligenceRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

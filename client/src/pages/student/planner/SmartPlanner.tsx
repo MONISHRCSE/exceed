@@ -3,6 +3,7 @@ import { plannerAPI } from '../../../api';
 import { StudyTask } from './types';
 import { getMonthGrid, getWeekHealth, generateSuggestions } from './utils';
 import { CalendarCell, TaskCard, IntelligencePanel } from './components';
+import { LearningEngine } from '../../../services/learningEngine';
 import {
   ChevronLeft, ChevronRight, Sparkles, Scale, Trash2, Plus,
   Loader2, Calendar as CalIcon, X
@@ -10,7 +11,7 @@ import {
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const WEAK_TOPICS = [
+const FALLBACK_WEAK = [
   { name: 'Kinematics', strength: 35 },
   { name: 'Derivatives', strength: 42 },
   { name: 'Cell Biology', strength: 55 },
@@ -25,6 +26,7 @@ export default function SmartPlannerPage() {
   const [balancing, setBalancing] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDayDrawer, setShowDayDrawer] = useState(false);
+  const [weakTopics, setWeakTopics] = useState(FALLBACK_WEAK);
 
   // Add task form
   const [newTitle, setNewTitle] = useState('');
@@ -40,7 +42,18 @@ export default function SmartPlannerPage() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { fetchTasks(); }, []);
+  useEffect(() => {
+    fetchTasks();
+    // Fetch real weak topics from intelligence engine
+    LearningEngine.getWeakTopics().then((topics: any[]) => {
+      if (topics.length > 0) {
+        setWeakTopics(topics.map(t => ({
+          name: t.concept_id || t.subject || 'Unknown',
+          strength: Math.round((t.mastery_score || 0) * 100),
+        })));
+      }
+    });
+  }, []);
 
   const cells = getMonthGrid(currentMonth, tasks);
   const selectedCell = cells.find(c => c.dateStr === selectedDate);
@@ -52,7 +65,7 @@ export default function SmartPlannerPage() {
   const handleGenerate = async () => {
     setGenerating(true);
     try {
-      await plannerAPI.generate({ weakTopics: WEAK_TOPICS.map(t => t.name) });
+      await plannerAPI.generate({ weakTopics: weakTopics.map(t => t.name) });
       fetchTasks();
     } catch { /* ignore */ }
     setGenerating(false);
@@ -224,7 +237,7 @@ export default function SmartPlannerPage() {
         {/* Intelligence Panel */}
         <div className="p-6">
           <IntelligencePanel todayTasks={todayTasks} weekHealth={weekHealth}
-            suggestions={suggestions} weakTopics={WEAK_TOPICS} />
+            suggestions={suggestions} weakTopics={weakTopics} />
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import { PracticeMode, PracticeState, PracticeQuestion } from '../../types/pract
 import { Brain, Flame, Target, BookOpen, Clock, AlertTriangle, ChevronRight, CheckCircle2, RotateCcw, HelpCircle, Trophy, Gamepad2, RefreshCw, Loader2, Database, Upload, FileText } from 'lucide-react';
 import RunnerGame from './RunnerGame';
 import { ContentSyncService } from '../../services/contentSync';
+import { LearningEngine } from '../../services/learningEngine';
 import { notesAPI, aiAPI } from '../../api';
 import { MOCK_WEAK_TOPICS, MOCK_QUESTIONS } from '../../data/mockData';
 
@@ -158,6 +159,16 @@ export default function PracticePage() {
     const currentQ = state.activeSession.questions[state.activeSession.currentQuestionIndex];
     const isCorrect = selectedAnswer === currentQ.correctAnswer;
     setShowExplanation(true);
+
+    // Log attempt to Learning Intelligence Engine
+    LearningEngine.logAttempt(
+      currentQ.topicId || 'general',
+      currentQ.id,
+      isCorrect,
+      undefined,
+      undefined
+    );
+
     setState(prev => {
       if (!prev.activeSession) return prev;
       return { ...prev, activeSession: {

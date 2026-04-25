@@ -181,3 +181,17 @@ export const practiceAPI = {
   clearCache: (notesId: string) =>
     request<any>(`/practice/cache/${notesId}`, { method: 'DELETE' }),
 }
+
+// ── Intelligence Engine API ──
+export const intelligenceAPI = {
+  logAttempt: (data: { conceptId: string; questionId: string; isCorrect: boolean; timeTaken?: number; subject?: string }) =>
+    request<any>('/intelligence/attempt', { method: 'POST', body: data }),
+  getMastery: () =>
+    request<any[]>('/intelligence/mastery'),
+  getWeakTopics: () =>
+    request<any[]>('/intelligence/weak-topics'),
+  getStats: () =>
+    request<any>('/intelligence/stats'),
+  getHistory: (limit?: number) =>
+    request<any[]>(`/intelligence/history${limit ? `?limit=${limit}` : ''}`),
+}
