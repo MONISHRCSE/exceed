@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { TutorState, TutorSession, TutorStep } from '../../types/assistant';
-import { Mic, Send, Brain, ChevronRight, CheckCircle2, RotateCcw, AlertCircle, Sparkles } from 'lucide-react';
+import { aiAPI } from '../../api';
+import { Mic, Send, Brain, ChevronRight, CheckCircle2, RotateCcw, AlertCircle, Sparkles, Loader2, Volume2 } from 'lucide-react';
 
 export default function TutorSessionPage() {
   const [state, setState] = useState<TutorState>({
@@ -41,11 +42,40 @@ export default function TutorSessionPage() {
   const [answer, setAnswer] = useState('');
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; message: string } | null>(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const activeSession = state.activeSession;
   if (!activeSession) return <div className="p-8">Loading tutor...</div>;
 
   const currentStep = activeSession.steps[activeSession.currentStepIndex];
+
+  const playAudio = async () => {
+    if (!currentStep.content || isPlayingAudio) return;
+    setIsPlayingAudio(true);
+    try {
+      const res = await aiAPI.tts(currentStep.content);
+      if (!res.ok) {
+        if (res.status === 400) {
+          alert('ElevenLabs API Key missing in backend.');
+        } else {
+          alert('TTS failed.');
+        }
+        setIsPlayingAudio(false);
+        return;
+      }
+      
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (audioRef.current) {
+        audioRef.current.src = url;
+        audioRef.current.play();
+      }
+    } catch (err) {
+      console.error(err);
+      setIsPlayingAudio(false);
+    }
+  };
 
   const handleNext = () => {
     setFeedback(null);
@@ -125,9 +155,21 @@ export default function TutorSessionPage() {
             <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-accent-500/20 border border-accent-500/30 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-accent-400" />
             </div>
-            <p className="text-surface-200 text-lg leading-relaxed ml-2">
-              {currentStep.content}
-            </p>
+            
+            <div className="flex items-start justify-between gap-4">
+              <p className="text-surface-200 text-lg leading-relaxed ml-2">
+                {currentStep.content}
+              </p>
+              <button 
+                onClick={playAudio}
+                disabled={isPlayingAudio}
+                title="Read aloud"
+                className="p-2 bg-surface-800 hover:bg-surface-700 rounded-full text-surface-400 hover:text-surface-200 transition-colors shrink-0"
+              >
+                {isPlayingAudio ? <Loader2 className="w-4 h-4 animate-spin" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+            </div>
+            <audio ref={audioRef} className="hidden" onEnded={() => setIsPlayingAudio(false)} />
           </div>
 
           {/* Interaction Area */}

@@ -14,6 +14,7 @@ const plannerRoutes = require('./routes/planner');
 const doubtRoutes = require('./routes/doubts');
 const progressRoutes = require('./routes/progress');
 const analyticsRoutes = require('./routes/analytics');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,7 @@ app.use('/api/planner', plannerRoutes);
 app.use('/api/doubts', doubtRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

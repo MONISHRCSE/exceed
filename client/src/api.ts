@@ -126,3 +126,36 @@ export const analyticsAPI = {
   teacher: () => request<any>('/analytics/teacher'),
   lecture: (id: string) => request<any>(`/analytics/lecture/${id}`),
 }
+
+// ── AI Integration API ──
+export const aiAPI = {
+  uploadPdf: (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const token = localStorage.getItem('exceed_token')
+    return fetch(`${API_BASE}/ai/upload-pdf`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: formData,
+    }).then(async r => {
+      if (!r.ok) {
+        const err = await r.json().catch(() => ({ message: 'Upload failed' }));
+        throw new Error(err.message || `HTTP ${r.status}`);
+      }
+      return r.json();
+    })
+  },
+  chat: (message: string, docId?: string) =>
+    request<any>('/ai/chat', { method: 'POST', body: { message, docId } }),
+  tts: (text: string) => {
+    const token = localStorage.getItem('exceed_token')
+    return fetch(`${API_BASE}/ai/tts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ text }),
+    })
+  }
+}
