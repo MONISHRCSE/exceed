@@ -174,12 +174,20 @@ export default function TutorSessionPage() {
   };
 
   const handleNext = () => {
-    if (activeSession && activeSession.steps && stepIndex < activeSession.steps.length - 1) {
-      setStepIndex(stepIndex + 1);
-      setSelectedOption(null);
-      setTextAnswer('');
-      setFeedbackState(null);
-      setShowHint(false);
+    if (activeSession && activeSession.steps) {
+      if (stepIndex < activeSession.steps.length - 1) {
+        setStepIndex(stepIndex + 1);
+        setSelectedOption(null);
+        setTextAnswer('');
+        setFeedbackState(null);
+        setShowHint(false);
+      } else {
+        // Finish Lesson
+        setSessions(prev => prev.map(s => 
+          s.id === activeSession.id ? { ...s, progress: 100, lastAccessed: 'Just now' } : s
+        ));
+        setViewMode('dashboard');
+      }
     }
   };
 
