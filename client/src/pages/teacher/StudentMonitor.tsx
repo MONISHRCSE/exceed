@@ -81,7 +81,7 @@ export default function StudentMonitor() {
                 </div>
                 <div>
                   <p className="text-xl font-semibold text-white">{card.value}</p>
-                  <p className="text-[12px] text-gray-500">{card.label} <span className="text-gray-600">/ {card.sub}</span></p>
+                  <p className="text-sm text-gray-">{card.label} <span className="text-gray-600">/ {card.sub}</span></p>
                 </div>
               </div>
             </motion.div>
@@ -99,14 +99,14 @@ export default function StudentMonitor() {
               placeholder="Search students..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-2 rounded-lg text-[12px] text-gray-300 placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
+              className="pl-8 pr-3 py-2 rounded-lg text-sm text-gray- placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
               style={{ borderColor: 'rgba(255,255,255,0.08)', width: '200px' }}
             />
           </div>
           <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
             {(['xp', 'quiz', 'name'] as const).map(s => (
               <button key={s} onClick={() => setSortBy(s)}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-md text-sm text-gray-400 font-medium transition-all"
                 style={{
                   color: sortBy === s ? 'white' : '#6B7280',
                   background: sortBy === s ? 'rgba(59,130,246,0.12)' : 'transparent',
@@ -119,12 +119,12 @@ export default function StudentMonitor() {
         </div>
         <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
           <button onClick={() => setViewMode('cards')}
-            className="px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+            className="px-3 py-1.5 rounded-md text-sm text-gray-400 font-medium transition-all"
             style={{ color: viewMode === 'cards' ? 'white' : '#6B7280', background: viewMode === 'cards' ? 'rgba(59,130,246,0.12)' : 'transparent' }}>
             Cards
           </button>
           <button onClick={() => setViewMode('table')}
-            className="px-3 py-1.5 rounded-md text-[12px] font-medium transition-all"
+            className="px-3 py-1.5 rounded-md text-sm text-gray-400 font-medium transition-all"
             style={{ color: viewMode === 'table' ? 'white' : '#6B7280', background: viewMode === 'table' ? 'rgba(59,130,246,0.12)' : 'transparent' }}>
             Table
           </button>
@@ -138,8 +138,8 @@ export default function StudentMonitor() {
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(59,130,246,0.1)' }}>
             <Users size={24} className="text-blue-400" />
           </div>
-          <p className="text-[14px] text-gray-300 font-medium">No students enrolled</p>
-          <p className="text-[12px] text-gray-600 mt-1">Students will appear here when they join your class</p>
+          <p className="text-base text-gray-300 font-medium">No students enrolled</p>
+          <p className="text-sm text-gray- mt-1">Students will appear here when they join your class</p>
         </div>
       ) : viewMode === 'cards' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -159,12 +159,12 @@ export default function StudentMonitor() {
               >
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-[12px] font-semibold text-white"
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm text-gray-400 font-semibold text-white"
                     style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
                     {s.first_name?.[0]}{s.last_name?.[0]}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-medium text-gray-200 truncate group-hover:text-white transition-colors">
+                    <p className="text-sm font-medium text-gray-200 truncate group-hover:text-white transition-colors">
                       {s.first_name} {s.last_name}
                     </p>
                     <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded"
@@ -176,7 +176,7 @@ export default function StudentMonitor() {
                       {isLow ? 'Needs Help' : 'Active'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 text-[12px] font-semibold text-amber-400">
+                  <div className="flex items-center gap-1 text-sm text-gray-400 font-semibold text-amber-400">
                     <Zap size={13} />
                     {s.total_xp || 0}
                   </div>
@@ -196,8 +196,8 @@ export default function StudentMonitor() {
                         style={{ background: 'rgba(255,255,255,0.02)' }}>
                         <Icon size={12} style={{ color: stat.color }} />
                         <div>
-                          <p className="text-[11px] text-gray-500">{stat.label}</p>
-                          <p className="text-[12px] text-gray-300 font-medium">{stat.value}</p>
+                          <p className="text-xs text-gray-500">{stat.label}</p>
+                          <p className="text-sm text-gray- font-medium">{stat.value}</p>
                         </div>
                       </div>
                     )
@@ -213,11 +213,11 @@ export default function StudentMonitor() {
           <table className="w-full">
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <th className="text-left px-5 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Student</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">XP</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Quiz Avg</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Notes Read</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Status</th>
+                <th className="text-left px-5 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Student</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">XP</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Quiz Avg</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Notes Read</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -232,14 +232,14 @@ export default function StudentMonitor() {
                           style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
                           {s.first_name?.[0]}{s.last_name?.[0]}
                         </div>
-                        <span className="text-[13px] text-gray-200">{s.first_name} {s.last_name}</span>
+                        <span className="text-sm text-gray-200">{s.first_name} {s.last_name}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-[12px] font-semibold text-amber-400 flex items-center gap-1">
+                    <td className="px-4 py-3 text-sm text-gray-400 font-semibold text-amber-400 flex items-center gap-1">
                       <Zap size={12} /> {s.total_xp || 0}
                     </td>
-                    <td className="px-4 py-3 text-[12px] text-gray-300">{s.average_quiz_score || 0}%</td>
-                    <td className="px-4 py-3 text-[12px] text-gray-300">{s.notes_viewed || 0}</td>
+                    <td className="px-4 py-3 text-sm text-gray-">{s.average_quiz_score || 0}%</td>
+                    <td className="px-4 py-3 text-sm text-gray-">{s.notes_viewed || 0}</td>
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded"
                         style={{

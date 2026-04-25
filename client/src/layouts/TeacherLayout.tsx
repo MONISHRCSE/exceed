@@ -81,13 +81,13 @@ export default function TeacherLayout() {
             </div>
             <div>
               <h1 className="text-base font-semibold text-white tracking-tight">Exceed</h1>
-              <p className="text-[11px] text-gray-500 font-medium tracking-widest uppercase">Teacher Workspace</p>
+              <p className="text-xs text-gray-500 font-medium tracking-widest uppercase">Teacher Workspace</p>
             </div>
           </div>
           <div className="mt-3 flex items-center gap-2 px-3 py-1.5 rounded-lg"
             style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}>
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] text-blue-300 font-medium">CS-301 Active</span>
+            <span className="text-xs text-blue-300 font-medium">CS-301 Active</span>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ export default function TeacherLayout() {
                 to={item.to}
                 end={item.end}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 relative ${
+                  `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative ${
                     isActive
                       ? 'text-white'
                       : 'text-gray-400 hover:text-gray-200 hover:bg-white/[0.04]'
@@ -140,8 +140,8 @@ export default function TeacherLayout() {
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-gray-200 truncate">{user?.firstName} {user?.lastName}</p>
-              <p className="text-[11px] text-gray-500 truncate">Computer Science</p>
+              <p className="text-sm font-medium text-gray-200 truncate">{user?.firstName} {user?.lastName}</p>
+              <p className="text-xs text-gray-500 truncate">Computer Science</p>
             </div>
             <div className="flex items-center gap-1">
               <Wifi size={12} className="text-emerald-400" />
@@ -149,7 +149,7 @@ export default function TeacherLayout() {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 text-[13px] text-gray-500 hover:text-red-400 rounded-lg transition-colors hover:bg-red-500/5"
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-red-400 rounded-lg transition-colors hover:bg-red-500/5"
           >
             <LogOut size={15} />
             <span>Sign Out</span>
@@ -168,11 +168,11 @@ export default function TeacherLayout() {
           }}>
           <div>
             <h1 className="text-xl font-semibold text-white">{currentPage.title}</h1>
-            <p className="text-[13px] text-gray-500 mt-0.5">{currentPage.subtitle}</p>
+            <p className="text-sm text-gray-500 mt-0.5">{currentPage.subtitle}</p>
           </div>
           <div className="flex items-center gap-3">
             {/* Search */}
-            <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] text-gray-500 transition-colors hover:bg-white/[0.04]"
+            <button className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-500 transition-colors hover:bg-white/[0.04]"
               style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
               <Search size={15} />
               <span className="hidden lg:inline">Search...</span>
@@ -194,7 +194,7 @@ export default function TeacherLayout() {
             <div className="relative">
               <button
                 onClick={() => setShowClassSwitch(!showClassSwitch)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] text-gray-300 font-medium transition-colors hover:bg-white/[0.04]"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-300 font-medium transition-colors hover:bg-white/[0.04]"
                 style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
                 <span>CS-301</span>
                 <ChevronDown size={14} className="text-gray-500" />
@@ -204,7 +204,7 @@ export default function TeacherLayout() {
             {/* Start Lecture CTA */}
             <button
               onClick={() => navigate('/teacher/record')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #3B82F6, #6366F1)',
                 boxShadow: '0 4px 15px rgba(59,130,246,0.3)',
@@ -214,7 +214,7 @@ export default function TeacherLayout() {
             </button>
 
             {/* Mini Avatar */}
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-semibold cursor-pointer"
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #3B82F6, #6366F1)' }}>
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>

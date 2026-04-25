@@ -53,7 +53,7 @@ const radarData = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload) return null
   return (
-    <div className="rounded-lg px-3 py-2 text-[11px]"
+    <div className="rounded-lg px-3 py-2 text-xs"
       style={{ background: 'rgba(17,24,39,0.95)', border: '1px solid rgba(255,255,255,0.1)' }}>
       <p className="text-gray-400 mb-1">{label}</p>
       {payload.map((p: any, i: number) => (
@@ -112,8 +112,8 @@ export default function TeacherAnalytics() {
                 </div>
               </div>
               <p className="text-xl font-semibold text-white">{card.value}</p>
-              <p className="text-[12px] text-gray-500 mt-0.5">{card.label}</p>
-              <p className="text-[11px] text-gray-600 mt-1">{card.delta}</p>
+              <p className="text-sm text-gray- mt-0.5">{card.label}</p>
+              <p className="text-xs text-gray-600 mt-1">{card.delta}</p>
             </motion.div>
           )
         })}
@@ -131,7 +131,7 @@ export default function TeacherAnalytics() {
         >
           <div className="flex items-center gap-2 mb-5">
             <TrendingUp size={16} className="text-blue-400" />
-            <h3 className="text-[14px] font-semibold text-white">Class Engagement Trend</h3>
+            <h3 className="text-base font-semibold text-white">Class Engagement Trend</h3>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <AreaChart data={engagementData}>
@@ -165,7 +165,7 @@ export default function TeacherAnalytics() {
         >
           <div className="flex items-center gap-2 mb-5">
             <Activity size={16} className="text-indigo-400" />
-            <h3 className="text-[14px] font-semibold text-white">Student Performance Radar</h3>
+            <h3 className="text-base font-semibold text-white">Student Performance Radar</h3>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <RadarChart data={radarData}>
@@ -187,7 +187,7 @@ export default function TeacherAnalytics() {
         >
           <div className="flex items-center gap-2 mb-5">
             <Target size={16} className="text-amber-400" />
-            <h3 className="text-[14px] font-semibold text-white">Topic Strength Heatmap</h3>
+            <h3 className="text-base font-semibold text-white">Topic Strength Heatmap</h3>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={topicHeatmap} layout="vertical">
@@ -214,7 +214,7 @@ export default function TeacherAnalytics() {
         >
           <div className="flex items-center gap-2 mb-5">
             <BookOpen size={16} className="text-emerald-400" />
-            <h3 className="text-[14px] font-semibold text-white">Completion Rates</h3>
+            <h3 className="text-base font-semibold text-white">Completion Rates</h3>
           </div>
           <div className="space-y-5 mt-2">
             {[
@@ -224,7 +224,7 @@ export default function TeacherAnalytics() {
               { label: 'Planner Tasks Done', pct: 63, color: '#F59E0B' },
             ].map(bar => (
               <div key={bar.label}>
-                <div className="flex justify-between text-[12px] mb-2">
+                <div className="flex justify-between text-sm text-gray-400 mb-2">
                   <span className="text-gray-300">{bar.label}</span>
                   <span className="text-gray-400 font-medium tabular-nums">{bar.pct}%</span>
                 </div>

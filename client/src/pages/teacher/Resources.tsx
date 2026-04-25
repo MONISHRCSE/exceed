@@ -33,20 +33,20 @@ export default function Resources() {
         <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(59,130,246,0.1)' }}>
           <Upload size={20} className="text-blue-400" />
         </div>
-        <p className="text-[13px] text-gray-300 font-medium">Drop files here or click to upload</p>
-        <p className="text-[11px] text-gray-600 mt-1">PDF, Audio, Video, Images up to 50MB</p>
+        <p className="text-sm text-gray-300 font-medium">Drop files here or click to upload</p>
+        <p className="text-xs text-gray-600 mt-1">PDF, Audio, Video, Images up to 50MB</p>
       </div>
 
       {/* File List */}
       <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="px-5 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[13px] font-medium text-gray-300">All Resources</p>
+          <p className="text-sm font-medium text-gray-300">All Resources</p>
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
               type="text"
               placeholder="Search files..."
-              className="pl-8 pr-3 py-1.5 rounded-lg text-[12px] text-gray-300 placeholder-gray-600 bg-white/[0.04] border focus:outline-none"
+              className="pl-8 pr-3 py-1.5 rounded-lg text-sm text-gray- placeholder-gray-600 bg-white/[0.04] border focus:outline-none"
               style={{ borderColor: 'rgba(255,255,255,0.08)', width: '180px' }}
             />
           </div>
@@ -68,8 +68,8 @@ export default function Resources() {
                   <Icon size={15} style={{ color }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] text-gray-200 truncate group-hover:text-white transition-colors">{file.name}</p>
-                  <p className="text-[11px] text-gray-500">{file.size} / {new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                  <p className="text-sm text-gray-200 truncate group-hover:text-white transition-colors">{file.name}</p>
+                  <p className="text-xs text-gray-500">{file.size} / {new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button className="p-1.5 rounded-md hover:bg-white/[0.06]"><Eye size={13} className="text-gray-400" /></button>

@@ -61,7 +61,7 @@ function StatusBadge({ status }: { status: string }) {
   }
   const c = config[status] || config.draft
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium"
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium"
       style={{ background: c.bg, color: c.text }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: c.text }} />
       {c.label}
@@ -194,14 +194,14 @@ export default function TeacherDashboard() {
               </div>
 
               <p className="text-2xl font-semibold text-white tracking-tight">{card.value}</p>
-              <p className="text-[13px] text-gray-500 mt-1">{card.label}</p>
+              <p className="text-sm text-gray-500 mt-1">{card.label}</p>
 
               <div className="flex items-center gap-2 mt-3">
-                <span className={`flex items-center gap-1 text-[11px] font-medium ${card.deltaUp ? 'text-emerald-400' : card.color === '#EF4444' ? 'text-red-400' : 'text-amber-400'}`}>
+                <span className={`flex items-center gap-1 text-xs font-medium ${card.deltaUp ? 'text-emerald-400' : card.color === '#EF4444' ? 'text-red-400' : 'text-amber-400'}`}>
                   {card.deltaUp ? <TrendingUp size={12} /> : null}
                   {card.delta}
                 </span>
-                <span className="text-[11px] text-gray-600">{card.sub}</span>
+                <span className="text-xs text-gray-600">{card.sub}</span>
               </div>
             </motion.div>
           )
@@ -217,11 +217,11 @@ export default function TeacherDashboard() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-base font-semibold text-white">Content Pipeline</h2>
-            <p className="text-[13px] text-gray-500">Record, process, publish, and monitor</p>
+            <p className="text-sm text-gray-500">Record, process, publish, and monitor</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6">
           {[
             {
               step: '01',
@@ -235,26 +235,17 @@ export default function TeacherDashboard() {
             },
             {
               step: '02',
-              title: 'Process Content',
+              title: 'Process Content and publish to class ',
               description: 'AI-refine transcripts into structured notes',
               icon: Wand2,
-              color: '#6366F1',
+              color: '#1625C6',
               action: 'Refine Notes',
               link: '/teacher/notes',
               details: ['Transcript cleanup', 'Key concept extraction', 'Translation queue'],
             },
+
             {
               step: '03',
-              title: 'Publish to Class',
-              description: 'Distribute content to enrolled students',
-              icon: Send,
-              color: '#10B981',
-              action: 'Publish Now',
-              link: '/teacher/notes',
-              details: ['Multi-language support', 'Class targeting', 'Scheduled release'],
-            },
-            {
-              step: '04',
               title: 'Monitor Learning',
               description: 'Track engagement and quiz performance',
               icon: MonitorPlay,
@@ -272,7 +263,7 @@ export default function TeacherDashboard() {
                 variants={fadeUp}
                 initial="hidden"
                 animate="visible"
-                className="group relative rounded-2xl p-5 transition-all duration-200 hover:scale-[1.01] cursor-pointer"
+                className="group relative rounded-2xl p-5 transition-all duration-200 hover:scale-[1.01] cursor-pointer flex flex-col h-full"
                 style={{
                   background: 'rgba(255,255,255,0.03)',
                   border: '1px solid rgba(255,255,255,0.06)',
@@ -280,36 +271,38 @@ export default function TeacherDashboard() {
                 onClick={() => navigate(item.link)}
               >
                 {/* Step connector line */}
-                {i < 3 && (
-                  <div className="hidden xl:block absolute top-1/2 -right-2 w-4 z-10">
-                    <ChevronRight size={16} className="text-gray-700" />
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-1/2 -right-3 w-6 z-10 flex items-center justify-center">
+                    <ChevronRight size={16} className="text-gray-600" />
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md"
-                    style={{ background: `${item.color}15`, color: item.color }}>
-                    {item.step}
-                  </span>
-                  <div className="p-1.5 rounded-lg" style={{ background: `${item.color}10` }}>
-                    <Icon size={16} style={{ color: item.color }} strokeWidth={1.8} />
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-md"
+                      style={{ background: `${item.color}15`, color: item.color }}>
+                      {item.step}
+                    </span>
+                    <div className="p-1.5 rounded-lg" style={{ background: `${item.color}10` }}>
+                      <Icon size={16} style={{ color: item.color }} strokeWidth={1.8} />
+                    </div>
                   </div>
+
+                  <h3 className="text-base font-semibold text-white mb-1">{item.title}</h3>
+                  <p className="text-sm text-gray-400 mb-4 leading-relaxed">{item.description}</p>
+
+                  <ul className="space-y-1.5 mb-4">
+                    {item.details.map(d => (
+                      <li key={d} className="flex items-center gap-2 text-xs text-gray-500">
+                        <span className="w-1 h-1 rounded-full" style={{ background: item.color }} />
+                        {d}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <h3 className="text-[14px] font-semibold text-white mb-1">{item.title}</h3>
-                <p className="text-[12px] text-gray-500 mb-4 leading-relaxed">{item.description}</p>
-
-                <ul className="space-y-1.5 mb-4">
-                  {item.details.map(d => (
-                    <li key={d} className="flex items-center gap-2 text-[11px] text-gray-500">
-                      <span className="w-1 h-1 rounded-full" style={{ background: item.color }} />
-                      {d}
-                    </li>
-                  ))}
-                </ul>
-
                 <button
-                  className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-[12px] font-semibold text-white transition-all group-hover:shadow-lg"
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold text-white transition-all group-hover:shadow-lg mt-auto"
                   style={{
                     background: `linear-gradient(135deg, ${item.color}, ${item.color}CC)`,
                     boxShadow: `0 2px 10px ${item.color}30`,
@@ -339,7 +332,7 @@ export default function TeacherDashboard() {
         <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <div>
             <h2 className="text-base font-semibold text-white">Recent Lectures</h2>
-            <p className="text-[12px] text-gray-500 mt-0.5">{recentLectures.length} total lectures</p>
+            <p className="text-sm text-gray- mt-0.5">{recentLectures.length} total lectures</p>
           </div>
           <div className="flex items-center gap-3">
             {/* Search */}
@@ -350,7 +343,7 @@ export default function TeacherDashboard() {
                 placeholder="Search lectures..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 rounded-lg text-[12px] text-gray-300 placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
+                className="pl-8 pr-3 py-1.5 rounded-lg text-sm text-gray- placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
                 style={{ borderColor: 'rgba(255,255,255,0.08)', width: '180px' }}
               />
             </div>
@@ -358,7 +351,7 @@ export default function TeacherDashboard() {
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              className="px-3 py-1.5 rounded-lg text-[12px] text-gray-300 bg-white/[0.04] border appearance-none cursor-pointer focus:outline-none"
+              className="px-3 py-1.5 rounded-lg text-sm text-gray- bg-white/[0.04] border appearance-none cursor-pointer focus:outline-none"
               style={{ borderColor: 'rgba(255,255,255,0.08)' }}
             >
               <option value="all">All Status</option>
@@ -366,7 +359,7 @@ export default function TeacherDashboard() {
               <option value="transcribing">Transcribing</option>
               <option value="draft">Draft</option>
             </select>
-            <Link to="/teacher/notes" className="text-[12px] text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">
+            <Link to="/teacher/notes" className="text-sm text-blue- hover:text-blue-300 font-medium flex items-center gap-1">
               View all <ArrowRight size={12} />
             </Link>
           </div>
@@ -377,11 +370,11 @@ export default function TeacherDashboard() {
           <table className="w-full">
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <th className="text-left px-6 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Lecture Title</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Date</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Transcript</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Status</th>
-                <th className="text-left px-4 py-3 text-[11px] uppercase text-gray-500 font-medium tracking-wider">Actions</th>
+                <th className="text-left px-6 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Lecture Title</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Date</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Transcript</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Status</th>
+                <th className="text-left px-4 py-3 text-xs uppercase text-gray-500 font-medium tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -392,11 +385,11 @@ export default function TeacherDashboard() {
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59,130,246,0.1)' }}>
                         <Mic size={20} className="text-blue-400" />
                       </div>
-                      <p className="text-[13px] text-gray-400 font-medium">No lectures found</p>
-                      <p className="text-[12px] text-gray-600">Record your first lecture to get started</p>
+                      <p className="text-sm text-gray-400 font-medium">No lectures found</p>
+                      <p className="text-sm text-gray-">Record your first lecture to get started</p>
                       <button
                         onClick={() => navigate('/teacher/record')}
-                        className="mt-2 px-4 py-2 rounded-lg text-[12px] font-semibold text-white"
+                        className="mt-2 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold text-white"
                         style={{ background: 'linear-gradient(135deg, #3B82F6, #6366F1)' }}
                       >
                         Start Recording
@@ -417,18 +410,18 @@ export default function TeacherDashboard() {
                           style={{ background: 'rgba(59,130,246,0.1)' }}>
                           <BookOpen size={14} className="text-blue-400" />
                         </div>
-                        <span className="text-[13px] text-gray-200 font-medium truncate max-w-[200px] group-hover:text-white transition-colors">
+                        <span className="text-sm text-gray-200 font-medium truncate max-w-[200px] group-hover:text-white transition-colors">
                           {lecture.title}
                         </span>
                       </div>
                     </td>
                     <td className="px-4 py-3.5">
-                      <span className="text-[12px] text-gray-500">
+                      <span className="text-sm text-gray-">
                         {new Date(lecture.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                     </td>
                     <td className="px-4 py-3.5">
-                      <span className="text-[12px] text-gray-500">
+                      <span className="text-sm text-gray-">
                         {lecture.transcript ? `${lecture.transcript.length} chars` : 'N/A'}
                       </span>
                     </td>

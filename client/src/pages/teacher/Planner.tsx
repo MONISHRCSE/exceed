@@ -35,7 +35,7 @@ export default function Planner() {
         <div className="flex items-center gap-1 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
           {(['all', 'today', 'upcoming', 'completed'] as const).map(f => (
             <button key={f} onClick={() => setFilter(f)}
-              className="px-4 py-2 rounded-lg text-[13px] font-medium transition-all capitalize"
+              className="px-4 py-2 rounded-lg text-sm font-medium transition-all capitalize"
               style={{
                 color: filter === f ? 'white' : '#6B7280',
                 background: filter === f ? 'rgba(59,130,246,0.12)' : 'transparent',
@@ -44,7 +44,7 @@ export default function Planner() {
             </button>
           ))}
         </div>
-        <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[12px] font-semibold text-white"
+        <button className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold text-white"
           style={{ background: 'linear-gradient(135deg, #3B82F6, #6366F1)' }}>
           <Plus size={14} /> Add Task
         </button>
@@ -69,17 +69,17 @@ export default function Planner() {
                 <Icon size={16} style={{ color }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`text-[13px] font-medium transition-colors ${task.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-200 group-hover:text-white'}`}>
+                <p className={`text-sm font-medium transition-colors ${task.status === 'completed' ? 'text-gray-500 line-through' : 'text-gray-200 group-hover:text-white'}`}>
                   {task.title}
                 </p>
-                <p className="text-[11px] text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-500 mt-0.5">
                   {new Date(task.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                 </p>
               </div>
               {task.status === 'completed' ? (
                 <CheckCircle2 size={16} className="text-emerald-400" />
               ) : (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium"
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium"
                   style={{
                     background: task.status === 'today' ? 'rgba(59,130,246,0.12)' : 'rgba(245,158,11,0.12)',
                     color: task.status === 'today' ? '#60A5FA' : '#FBBF24',

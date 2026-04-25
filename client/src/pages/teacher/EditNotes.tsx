@@ -113,7 +113,7 @@ export default function EditNotes() {
           </button>
           <div>
             <h1 className="text-lg font-semibold text-white">{notes.title || 'Untitled Notes'}</h1>
-            <p className="text-[12px] text-gray-500 flex items-center gap-2">
+            <p className="text-sm text-gray- flex items-center gap-2">
               <Globe size={11} /> {notes.language?.toUpperCase() || 'EN'}
               <span className="text-gray-700">|</span>
               v{notes.version || 1}
@@ -130,13 +130,13 @@ export default function EditNotes() {
         </div>
         <div className="flex items-center gap-2">
           <button onClick={handleSave} disabled={saving}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[12px] font-semibold transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold transition-all disabled:opacity-50"
             style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', color: '#D1D5DB' }}>
             <Save size={14} />
             {saving ? 'Saving...' : 'Save Draft'}
           </button>
           <button onClick={handlePublish} disabled={publishing || !!notes.published_at}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[12px] font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-400 font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
             style={{ background: notes.published_at ? 'rgba(16,185,129,0.15)' : 'linear-gradient(135deg, #10B981, #059669)', color: notes.published_at ? '#34D399' : 'white' }}>
             {notes.published_at ? <><CheckCircle2 size={14} /> Published</> : <><Send size={14} /> {publishing ? 'Publishing...' : 'Publish'}</>}
           </button>
@@ -148,7 +148,7 @@ export default function EditNotes() {
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[12px] font-medium"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-400 font-medium"
           style={{
             background: messageType === 'success' ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)',
             border: `1px solid ${messageType === 'success' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'}`,
@@ -168,7 +168,7 @@ export default function EditNotes() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 color: activeTab === tab.id ? 'white' : '#6B7280',
                 background: activeTab === tab.id ? 'rgba(59,130,246,0.12)' : 'transparent',
@@ -189,13 +189,13 @@ export default function EditNotes() {
             style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <div className="flex items-center gap-2 mb-4">
               <FileText size={15} className="text-blue-400" />
-              <h2 className="text-[14px] font-semibold text-white">Content Editor</h2>
-              <span className="text-[11px] text-gray-600 ml-auto">Markdown supported</span>
+              <h2 className="text-base font-semibold text-white">Content Editor</h2>
+              <span className="text-xs text-gray-600 ml-auto">Markdown supported</span>
             </div>
             <textarea
               value={content}
               onChange={e => setContent(e.target.value)}
-              className="w-full h-[500px] px-4 py-3 rounded-xl text-[13px] text-gray-300 placeholder-gray-600 bg-white/[0.03] border resize-none leading-relaxed font-mono focus:outline-none focus:border-blue-500/30"
+              className="w-full h-[500px] px-4 py-3 rounded-xl text-sm text-gray-300 placeholder-gray-600 bg-white/[0.03] border resize-none leading-relaxed font-mono focus:outline-none focus:border-blue-500/30"
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}
               placeholder="Edit your structured notes here (supports Markdown)..."
             />
@@ -206,7 +206,7 @@ export default function EditNotes() {
             <div className="rounded-2xl p-5" style={{ background: 'rgba(99,102,241,0.04)', border: '1px solid rgba(99,102,241,0.1)' }}>
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles size={15} className="text-indigo-400" />
-                <h3 className="text-[13px] font-semibold text-white">AI Suggestions</h3>
+                <h3 className="text-sm font-semibold text-white">AI Suggestions</h3>
               </div>
               <div className="space-y-3">
                 {[
@@ -217,13 +217,13 @@ export default function EditNotes() {
                   const Icon = section.icon
                   return (
                     <div key={section.label} className="p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.02)' }}>
-                      <p className="text-[11px] font-semibold text-gray-400 flex items-center gap-1.5 mb-2">
+                      <p className="text-xs font-semibold text-gray-400 flex items-center gap-1.5 mb-2">
                         <Icon size={12} className="text-indigo-400" />
                         {section.label}
                       </p>
                       <ul className="space-y-1">
                         {section.items.map(item => (
-                          <li key={item} className="text-[11px] text-gray-500 flex items-center gap-2">
+                          <li key={item} className="text-xs text-gray-500 flex items-center gap-2">
                             <span className="w-1 h-1 rounded-full bg-indigo-500" />
                             {item}
                           </li>
@@ -243,13 +243,13 @@ export default function EditNotes() {
         <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="flex items-center gap-2 mb-5">
             <Languages size={16} className="text-blue-400" />
-            <h2 className="text-[14px] font-semibold text-white">Translate Notes</h2>
+            <h2 className="text-base font-semibold text-white">Translate Notes</h2>
           </div>
-          <p className="text-[12px] text-gray-500 mb-4">Select target languages for translation. Original: {notes.language?.toUpperCase() || 'EN'}</p>
+          <p className="text-sm text-gray- mb-4">Select target languages for translation. Original: {notes.language?.toUpperCase() || 'EN'}</p>
           <div className="flex flex-wrap gap-2 mb-5">
             {LANGUAGES.filter(l => l.code !== notes.language).map(lang => (
               <button key={lang.code} onClick={() => toggleLang(lang.code)}
-                className="px-3.5 py-2 rounded-lg text-[12px] font-medium transition-all"
+                className="px-3.5 py-2 rounded-lg text-sm text-gray-400 font-medium transition-all"
                 style={{
                   background: selectedLangs.includes(lang.code) ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
                   border: `1px solid ${selectedLangs.includes(lang.code) ? 'rgba(99,102,241,0.3)' : 'rgba(255,255,255,0.08)'}`,
@@ -260,7 +260,7 @@ export default function EditNotes() {
             ))}
           </div>
           <button onClick={handleTranslate} disabled={translating || selectedLangs.length === 0}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white disabled:opacity-50 transition-all"
             style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
             <Globe size={15} />
             {translating ? 'Translating...' : `Translate to ${selectedLangs.length} language(s)`}
@@ -274,10 +274,10 @@ export default function EditNotes() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CreditCard size={16} className="text-amber-400" />
-              <h2 className="text-[14px] font-semibold text-white">Auto-Generated Flashcards</h2>
-              <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-400 font-medium">{flashcards.length}</span>
+              <h2 className="text-base font-semibold text-white">Auto-Generated Flashcards</h2>
+              <span className="text-xs px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-400 font-medium">{flashcards.length}</span>
             </div>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold text-white"
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-400 font-semibold text-white"
               style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}>
               <Plus size={13} /> Add Card
             </button>
@@ -292,7 +292,7 @@ export default function EditNotes() {
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md"
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md"
                     style={{
                       background: fc.difficulty === 'Easy' ? 'rgba(16,185,129,0.12)' : fc.difficulty === 'Hard' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
                       color: fc.difficulty === 'Easy' ? '#34D399' : fc.difficulty === 'Hard' ? '#F87171' : '#FBBF24',
@@ -308,8 +308,8 @@ export default function EditNotes() {
                   <button className="p-1 rounded hover:bg-red-500/10"><Trash2 size={12} className="text-gray-600 hover:text-red-400" /></button>
                 </div>
               </div>
-              <p className="text-[13px] text-gray-200 font-medium mb-2">Q: {fc.q}</p>
-              <p className="text-[12px] text-gray-500">A: {fc.a}</p>
+              <p className="text-sm text-gray-200 font-medium mb-2">Q: {fc.q}</p>
+              <p className="text-sm text-gray-">A: {fc.a}</p>
             </motion.div>
           ))}
         </div>
@@ -321,10 +321,10 @@ export default function EditNotes() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <HelpCircle size={16} className="text-indigo-400" />
-              <h2 className="text-[14px] font-semibold text-white">Auto-Generated Quiz</h2>
-              <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-indigo-500/15 text-indigo-400 font-medium">{quizQuestions.length} questions</span>
+              <h2 className="text-base font-semibold text-white">Auto-Generated Quiz</h2>
+              <span className="text-xs px-1.5 py-0.5 rounded-md bg-indigo-500/15 text-indigo-400 font-medium">{quizQuestions.length} questions</span>
             </div>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold text-white"
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-400 font-semibold text-white"
               style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
               <Plus size={13} /> Add Question
             </button>
@@ -338,7 +338,7 @@ export default function EditNotes() {
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
             >
               <div className="flex items-start justify-between mb-3">
-                <p className="text-[13px] text-gray-200 font-medium">Q{i + 1}. {q.question}</p>
+                <p className="text-sm text-gray-200 font-medium">Q{i + 1}. {q.question}</p>
                 <div className="flex gap-1">
                   <button className="p-1 rounded hover:bg-white/[0.05]"><Edit3 size={12} className="text-gray-500" /></button>
                   <button className="p-1 rounded hover:bg-red-500/10"><Trash2 size={12} className="text-gray-600 hover:text-red-400" /></button>
@@ -347,7 +347,7 @@ export default function EditNotes() {
               <div className="grid grid-cols-2 gap-2 mb-3">
                 {q.options.map((opt, oi) => (
                   <div key={oi}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-[12px]"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400"
                     style={{
                       background: oi === q.correct ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.02)',
                       border: `1px solid ${oi === q.correct ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.05)'}`,
@@ -364,7 +364,7 @@ export default function EditNotes() {
                   </div>
                 ))}
               </div>
-              <p className="text-[11px] text-gray-500 flex items-center gap-1.5">
+              <p className="text-xs text-gray-500 flex items-center gap-1.5">
                 <Lightbulb size={11} className="text-amber-400" />
                 {q.explanation}
               </p>

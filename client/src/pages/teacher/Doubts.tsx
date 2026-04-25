@@ -71,13 +71,13 @@ export default function TeacherDoubts() {
             { key: 'answered', label: 'Answered', count: answeredCount },
           ] as const).map(f => (
             <button key={f.key} onClick={() => setFilter(f.key)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 color: filter === f.key ? 'white' : '#6B7280',
                 background: filter === f.key ? 'rgba(59,130,246,0.12)' : 'transparent',
               }}>
               {f.label}
-              <span className="text-[11px] px-1.5 py-0.5 rounded-md"
+              <span className="text-xs px-1.5 py-0.5 rounded-md"
                 style={{
                   background: filter === f.key ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.06)',
                   color: filter === f.key ? '#60A5FA' : '#6B7280',
@@ -94,7 +94,7 @@ export default function TeacherDoubts() {
             placeholder="Search doubts..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="pl-8 pr-3 py-2 rounded-lg text-[12px] text-gray-300 placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
+            className="pl-8 pr-3 py-2 rounded-lg text-sm text-gray- placeholder-gray-600 bg-white/[0.04] border transition-colors focus:outline-none focus:border-blue-500/40"
             style={{ borderColor: 'rgba(255,255,255,0.08)', width: '200px' }}
           />
         </div>
@@ -107,7 +107,7 @@ export default function TeacherDoubts() {
           style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
             <Inbox size={15} className="text-gray-400" />
-            <span className="text-[13px] font-medium text-gray-300">Inbox</span>
+            <span className="text-sm font-medium text-gray-300">Inbox</span>
             {pendingCount > 0 && (
               <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-400 font-semibold ml-auto">
                 {pendingCount} pending
@@ -120,8 +120,8 @@ export default function TeacherDoubts() {
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(59,130,246,0.1)' }}>
                   <MessageCircleQuestion size={20} className="text-blue-400" />
                 </div>
-                <p className="text-[13px] text-gray-400 font-medium">No doubts found</p>
-                <p className="text-[11px] text-gray-600 mt-1">Students haven't submitted any questions yet</p>
+                <p className="text-sm text-gray-400 font-medium">No doubts found</p>
+                <p className="text-xs text-gray-600 mt-1">Students haven't submitted any questions yet</p>
               </div>
             ) : (
               filtered.map(d => (
@@ -142,7 +142,7 @@ export default function TeacherDoubts() {
                         style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
                         {(d.student_name || 'S')?.[0]}
                       </div>
-                      <span className="text-[12px] font-medium text-gray-300">{d.student_name || 'Student'}</span>
+                      <span className="text-sm text-gray-400 font-medium text-gray-300">{d.student_name || 'Student'}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       {d.is_voice && <Mic size={11} className="text-indigo-400" />}
@@ -157,7 +157,7 @@ export default function TeacherDoubts() {
                       </span>
                     </div>
                   </div>
-                  <p className="text-[12px] text-gray-400 line-clamp-2 leading-relaxed">{d.question_text}</p>
+                  <p className="text-sm text-gray- line-clamp-2 leading-relaxed">{d.question_text}</p>
                   <p className="text-[10px] text-gray-600 mt-2">
                     {new Date(d.submitted_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -181,13 +181,13 @@ export default function TeacherDoubts() {
                 {/* Detail Header */}
                 <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-semibold text-white"
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white"
                       style={{ background: 'linear-gradient(135deg, #6366F1, #3B82F6)' }}>
                       {(selected.student_name || 'S')?.[0]}
                     </div>
                     <div>
-                      <p className="text-[13px] font-medium text-white">{selected.student_name || 'Student'}</p>
-                      <p className="text-[11px] text-gray-500">
+                      <p className="text-sm font-medium text-white">{selected.student_name || 'Student'}</p>
+                      <p className="text-xs text-gray-500">
                         {new Date(selected.submitted_at).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
@@ -200,8 +200,8 @@ export default function TeacherDoubts() {
                 {/* Question */}
                 <div className="p-5 flex-1 overflow-y-auto space-y-4">
                   <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Question</p>
-                    <p className="text-[13px] text-gray-300 leading-relaxed">{selected.question_text}</p>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Question</p>
+                    <p className="text-sm text-gray-300 leading-relaxed">{selected.question_text}</p>
                     {selected.is_voice && (
                       <span className="inline-flex items-center gap-1 mt-2 text-[10px] text-indigo-400">
                         <Mic size={10} /> Voice question
@@ -211,11 +211,11 @@ export default function TeacherDoubts() {
 
                   {/* AI Suggested Answer */}
                   <div className="rounded-xl p-4" style={{ background: 'rgba(99,102,241,0.04)', border: '1px solid rgba(99,102,241,0.1)' }}>
-                    <p className="text-[11px] font-semibold text-indigo-400 flex items-center gap-1.5 mb-2">
+                    <p className="text-xs font-semibold text-indigo-400 flex items-center gap-1.5 mb-2">
                       <Sparkles size={12} />
                       AI Suggested Response
                     </p>
-                    <p className="text-[12px] text-gray-400 leading-relaxed italic">
+                    <p className="text-sm text-gray- leading-relaxed italic">
                       Based on the lecture content, the student may be referring to the core concepts discussed in the session.
                       Consider addressing the foundational principles and providing an example to clarify.
                     </p>
@@ -224,11 +224,11 @@ export default function TeacherDoubts() {
                   {/* Existing response */}
                   {selected.response && selected.status === 'answered' && (
                     <div className="rounded-xl p-4" style={{ background: 'rgba(16,185,129,0.04)', border: '1px solid rgba(16,185,129,0.1)' }}>
-                      <p className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1.5 mb-2">
+                      <p className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mb-2">
                         <CheckCircle2 size={12} />
                         Your Response
                       </p>
-                      <p className="text-[12px] text-gray-400 leading-relaxed">{selected.response}</p>
+                      <p className="text-sm text-gray- leading-relaxed">{selected.response}</p>
                     </div>
                   )}
                 </div>
@@ -238,19 +238,19 @@ export default function TeacherDoubts() {
                   <textarea
                     value={response}
                     onChange={e => setResponse(e.target.value)}
-                    className="w-full h-28 px-4 py-3 rounded-xl text-[13px] text-gray-300 placeholder-gray-600 bg-white/[0.03] border resize-none leading-relaxed focus:outline-none focus:border-blue-500/30 mb-3"
+                    className="w-full h-28 px-4 py-3 rounded-xl text-sm text-gray-300 placeholder-gray-600 bg-white/[0.03] border resize-none leading-relaxed focus:outline-none focus:border-blue-500/30 mb-3"
                     style={{ borderColor: 'rgba(255,255,255,0.06)' }}
                     placeholder="Type your response..."
                   />
                   <div className="flex items-center justify-between">
-                    <button className="text-[12px] text-gray-500 hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                    <button className="text-sm text-gray- hover:text-emerald-400 transition-colors flex items-center gap-1.5">
                       <CheckCircle2 size={13} />
                       Mark Resolved
                     </button>
                     <button
                       onClick={handleRespond}
                       disabled={sending || !response.trim()}
-                      className="flex items-center gap-2 px-5 py-2 rounded-lg text-[13px] font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
+                      className="flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-50 transition-all hover:scale-[1.02]"
                       style={{ background: 'linear-gradient(135deg, #3B82F6, #6366F1)' }}
                     >
                       <Send size={14} />
@@ -265,8 +265,8 @@ export default function TeacherDoubts() {
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(59,130,246,0.08)' }}>
                 <MessageCircleQuestion size={24} className="text-blue-400" />
               </div>
-              <p className="text-[14px] text-gray-400 font-medium">Select a doubt to respond</p>
-              <p className="text-[12px] text-gray-600 mt-1">Choose from the inbox on the left</p>
+              <p className="text-base text-gray-400 font-medium">Select a doubt to respond</p>
+              <p className="text-sm text-gray- mt-1">Choose from the inbox on the left</p>
             </div>
           )}
         </div>
