@@ -99,10 +99,18 @@ export const flashcardsAPI = {
 // ── Planner API ──
 export const plannerAPI = {
   get: () => request<any[]>('/planner'),
-  addTask: (task: { title: string; description: string; scheduledDate: string; type: string }) =>
+  addTask: (task: { title: string; description?: string; scheduledDate: string; type: string; subject?: string; topic?: string; duration?: number; priority?: string }) =>
     request<any>('/planner', { method: 'POST', body: task }),
   complete: (id: string) =>
     request<any>(`/planner/${id}/complete`, { method: 'PUT' }),
+  reschedule: (id: string, newDate: string) =>
+    request<any>(`/planner/${id}/reschedule`, { method: 'PUT', body: { newDate } }),
+  remove: (id: string) =>
+    request<any>(`/planner/${id}`, { method: 'DELETE' }),
+  generate: (data: { weakTopics?: string[]; examDates?: string[] }) =>
+    request<any>('/planner/generate', { method: 'POST', body: data }),
+  balance: () =>
+    request<any>('/planner/balance', { method: 'POST', body: {} }),
 }
 
 // ── Doubts API ──
