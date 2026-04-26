@@ -7,6 +7,7 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -100,19 +101,35 @@ export default function LoginPage() {
                   placeholder="you@example.com"
                 />
               </div>
-              <div>
+              <div className="relative">
                 <label htmlFor="password" className="block text-sm font-medium text-surface-300 mb-1.5">
                   Password
                 </label>
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-surface-800/80 border border-surface-600/50 text-surface-100 placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all text-sm"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-[38px] text-surface-500 hover:text-surface-300 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  )}
+                </button>
               </div>
               <button
                 type="submit"
@@ -136,20 +153,47 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Demo credentials hint */}
-          <div className="mt-4 glass-light rounded-xl p-4 text-center">
-            <p className="text-xs text-surface-400 mb-2">Demo credentials:</p>
-            <div className="flex gap-4 justify-center text-xs">
-              <div>
-                <span className="text-surface-300 font-medium">Teacher:</span>{' '}
-                <span className="text-primary-400">teacher@exceed.com</span>
-              </div>
-              <div>
-                <span className="text-surface-300 font-medium">Student:</span>{' '}
-                <span className="text-accent-400">student@exceed.com</span>
-              </div>
+          {/* Quick Login / Demo Credentials */}
+          <div className="mt-6 flex flex-col gap-3 animate-fade-in" style={{ animationDelay: '200ms' }}>
+            <p className="text-[10px] font-bold text-surface-500 uppercase tracking-widest text-center">Quick Demo Login</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => {
+                  setEmail('student@exceed.com')
+                  setPassword('password123')
+                  setTimeout(() => {
+                    const form = document.querySelector('form');
+                    form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                  }, 100);
+                }}
+                className="group relative px-4 py-3 rounded-xl bg-surface-900 border border-surface-800 hover:border-accent-500/50 transition-all text-left overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                  🎓
+                </div>
+                <p className="text-[10px] font-bold text-accent-400 mb-0.5">Student</p>
+                <p className="text-xs text-surface-300 font-medium truncate">student@exceed.com</p>
+              </button>
+
+              <button
+                onClick={() => {
+                  setEmail('teacher@exceed.com')
+                  setPassword('password123')
+                  setTimeout(() => {
+                    const form = document.querySelector('form');
+                    form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                  }, 100);
+                }}
+                className="group relative px-4 py-3 rounded-xl bg-surface-900 border border-surface-800 hover:border-primary-500/50 transition-all text-left overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                  👨‍🏫
+                </div>
+                <p className="text-[10px] font-bold text-primary-400 mb-0.5">Teacher</p>
+                <p className="text-xs text-surface-300 font-medium truncate">teacher@exceed.com</p>
+              </button>
             </div>
-            <p className="text-xs text-surface-500 mt-1">Password: password123</p>
+            <p className="text-[10px] text-surface-600 text-center italic">Form will automatically submit after clicking</p>
           </div>
         </div>
       </div>

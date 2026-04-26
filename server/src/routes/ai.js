@@ -55,12 +55,15 @@ async function callAI(messages, { temperature = 0.3, maxTokens = 3000 } = {}) {
   throw new Error('No AI provider configured. Set FEATHERLESS_API_KEY or GROQ_API_KEY in .env');
 }
 
-// POST /api/ai/upload-pdf
-// Extracts text from uploaded PDF and stores it in context
 router.post('/upload-pdf', upload.single('file'), async (req, res) => {
+  console.log('[AI] Received PDF upload request');
   try {
-    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+    if (!req.file) {
+      console.log('[AI] No file in request');
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
     
+    console.log('[AI] Parsing PDF...', req.file.originalname, `(${req.file.size} bytes)`);
     const data = await pdfParse(req.file.buffer);
     const docId = uuidv4();
     
