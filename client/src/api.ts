@@ -168,6 +168,8 @@ export const aiAPI = {
     request<{ answer: string }>('/ai/voice-chat', { method: 'POST', body: { message, history, context } }),
   translate: (text: string, targetLang: string, sourceLang?: string) =>
     request<{ translatedText: string }>('/ai/translate', { method: 'POST', body: { text, targetLang, sourceLang } }),
+  evaluateNode: (data: { nodeTitle: string; concept: string; nodeContent: string; userAnswer: string }) =>
+    request<{ score: number; feedback: string; passed: boolean }>('/ai/evaluate-node', { method: 'POST', body: data }),
   tts: (text: string) => {
     const token = localStorage.getItem('exceed_token')
     return fetch(`${API_BASE}/ai/tts`, {
@@ -251,4 +253,20 @@ export const queriesAPI = {
     request<any>(`/queries/${id}/status`, { method: 'PATCH', body: { status } }),
   delete: (id: string) =>
     request<any>(`/queries/${id}`, { method: 'DELETE' }),
+}
+
+// ── Journeys API ──
+export const journeysAPI = {
+  generate: (data: { notesId?: string; content: string; title?: string }) =>
+    request<any>('/journeys/generate', { method: 'POST', body: data }),
+  list: () =>
+    request<any[]>('/journeys'),
+  get: (id: string) =>
+    request<any>(`/journeys/${id}`),
+  updateProgress: (id: string, nodeId: string) =>
+    request<any>(`/journeys/${id}/progress`, { method: 'POST', body: { nodeId } }),
+  badges: () =>
+    request<any[]>('/journeys/badges/mine'),
+  delete: (id: string) =>
+    request<any>(`/journeys/${id}`, { method: 'DELETE' }),
 }

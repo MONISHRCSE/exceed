@@ -317,7 +317,7 @@ export default function RunnerGame({ questions, onEndSession }: RunnerGameProps)
           )}
           <div className="w-28 h-28 rounded-full flex items-center justify-center relative">
             <img 
-              src="/assets/runner_avatar.png" 
+              src="/assets/runner_avatar.svg" 
               alt="Avatar" 
               className={`w-full h-full object-contain transition-all duration-300 ${
                 phase === 'feedback'

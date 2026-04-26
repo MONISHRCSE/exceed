@@ -31,6 +31,9 @@ let data = {
   class_content: [],
   queries: [],
   query_replies: [],
+  journeys: [],
+  journey_progress: [],
+  badges: [],
 };
 
 function loadFromDisk() {

@@ -511,5 +511,54 @@ router.post('/translate', async (req, res) => {
     res.status(500).json({ message: err.message || 'Translation failed' });
   }
 });
+// ── POST /api/ai/evaluate-node — Grade a student's free-text answer ──────────
+router.post('/evaluate-node', async (req, res) => {
+  const { nodeTitle, concept, nodeContent, userAnswer } = req.body;
+  if (!concept || !userAnswer?.trim()) {
+    return res.status(400).json({ message: 'concept and userAnswer are required' });
+  }
+
+  // Mock mode: instant feedback without AI
+  if (process.env.MOCK_DATA === '1' || !process.env.FEATHERLESS_API_KEY) {
+    const words = userAnswer.trim().split(/\s+/).length;
+    const score = Math.min(100, Math.max(10, words * 8));
+    return res.json({
+      score,
+      feedback: score >= 30
+        ? `Good start! You mentioned some key ideas about "${concept}". Keep building on this understanding.`
+        : `Try to elaborate more on "${concept}". Write at least 1-2 sentences explaining the core idea.`,
+      passed: score >= 30,
+    });
+  }
+
+  const prompt = `You are an educational evaluator grading a student's understanding of a concept.
+
+Concept: "${concept}"
+Node title: "${nodeTitle || concept}"
+Reference material: "${(nodeContent || '').slice(0, 800)}"
+Student's answer: "${userAnswer}"
+
+Score the answer from 0 to 100 based on whether the student demonstrates basic conceptual understanding.
+Be encouraging and lenient — award at least 30 if they show any relevant understanding.
+Deduct points only if the answer is completely off-topic or nonsensical.
+
+Respond ONLY with valid JSON (no markdown, no extra text):
+{"score": <integer 0-100>, "feedback": "<2-3 encouraging sentences with specific observation and suggestion>", "passed": <true if score >= 30>}`;
+
+  try {
+    const raw = await callAI([
+      { role: 'system', content: 'You are an educational evaluator. Respond only with valid JSON.' },
+      { role: 'user', content: prompt },
+    ], { temperature: 0.3, maxTokens: 250 });
+
+    const cleaned = raw.replace(/^```json?\s*/i, '').replace(/```\s*$/i, '').trim();
+    const result = JSON.parse(cleaned);
+    result.passed = result.score >= 30; // enforce server-side
+    res.json(result);
+  } catch (err) {
+    console.error('[AI] evaluate-node error:', err.message);
+    res.status(500).json({ message: 'Evaluation failed. Please try again.' });
+  }
+});
 
 module.exports = router;

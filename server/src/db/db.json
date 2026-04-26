@@ -442,13 +442,13 @@
     {
       "id": "3542a09b-a602-4335-ac12-a0878092864a",
       "student_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
-      "total_xp": 170,
+      "total_xp": 182,
       "level": 1,
       "notes_viewed": 0,
       "quizzes_completed": 0,
       "flashcards_reviewed": 6,
       "average_quiz_score": 86,
-      "last_activity_at": "2026-04-25T19:23:43.146Z"
+      "last_activity_at": "2026-04-26T01:14:31.233Z"
     },
     {
       "id": "7fd47ef4-7e21-4efa-abc2-a4828c0cfae4",
@@ -473,9 +473,98 @@
       "last_activity_at": "2026-04-25T19:23:43.146Z"
     }
   ],
-  "attempt_logs": [],
-  "concept_mastery": [],
-  "study_streaks": [],
+  "attempt_logs": [
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "1",
+      "question_id": "q1",
+      "is_correct": true,
+      "time_taken": 0,
+      "timestamp": 1777166053876,
+      "id": "d11ad314-56a4-4727-b0f2-e05d38bc2630"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "2",
+      "question_id": "q6",
+      "is_correct": false,
+      "time_taken": 0,
+      "timestamp": 1777166057934,
+      "id": "c11fe50b-5c7f-40c4-a8d3-b625ddc31da0"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "3",
+      "question_id": "q3",
+      "is_correct": true,
+      "time_taken": 0,
+      "timestamp": 1777166061830,
+      "id": "1ac93ade-3e3e-47b0-bfe9-d5c4bf8f3545"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "1",
+      "question_id": "q5",
+      "is_correct": false,
+      "time_taken": 0,
+      "timestamp": 1777166071231,
+      "id": "d9677bc6-31f5-4fb0-852f-b9efa7f8819e"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "1",
+      "question_id": "q4",
+      "is_correct": false,
+      "time_taken": 0,
+      "timestamp": 1777166076667,
+      "id": "32638e48-b236-41d7-ada5-87a96f5dd5c1"
+    }
+  ],
+  "concept_mastery": [
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "1",
+      "subject": "General",
+      "attempts": 2,
+      "correct": 1,
+      "mistake_count": 1,
+      "mastery_score": 0.65,
+      "last_reviewed": "2026-04-26T01:14:31.233Z",
+      "id": "fa48a0a1-26bc-46b7-a144-5fa18ef34394"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "2",
+      "subject": "General",
+      "attempts": 1,
+      "correct": 0,
+      "mistake_count": 1,
+      "mastery_score": 0.3,
+      "last_reviewed": "2026-04-26T01:14:17.939Z",
+      "id": "cbd1d4bc-161b-481b-9e07-4d7c96855586"
+    },
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "concept_id": "3",
+      "subject": "General",
+      "attempts": 1,
+      "correct": 1,
+      "mistake_count": 0,
+      "mastery_score": 1,
+      "last_reviewed": "2026-04-26T01:14:21.834Z",
+      "id": "8d7c538b-1efd-4d6d-b904-1b1104ef7879"
+    }
+  ],
+  "study_streaks": [
+    {
+      "user_id": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "current_streak": 1,
+      "max_streak": 1,
+      "last_active_date": "2026-04-26",
+      "total_days_active": 1,
+      "id": "aacab4f7-24df-4f13-a16f-a91ca12a06c0"
+    }
+  ],
   "classes": [
     {
       "name": "CS101",
@@ -530,5 +619,261 @@
   ],
   "class_content": [],
   "queries": [],
-  "query_replies": []
+  "query_replies": [],
+  "journeys": [
+    {
+      "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53",
+      "notesId": "ca0665fa-a099-44b0-9133-2d4f1a1b754d",
+      "title": "Introduction to Machine Learning",
+      "description": "A comprehensive journey to understand the basics of machine learning, including its definition, types, key algorithms, and important concepts.",
+      "nodes": [
+        {
+          "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-1",
+          "title": "What is Machine Learning?",
+          "concept": "Definition of machine learning as a subset of artificial intelligence.",
+          "content": "Machine learning is a subset of artificial intelligence that focuses on building systems capable of learning from data without being explicitly programmed.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": false,
+          "isCompleted": false,
+          "order": 0
+        },
+        {
+          "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-2",
+          "title": "Types of Machine Learning",
+          "concept": "Overview of supervised, unsupervised, and reinforcement learning.",
+          "content": "Machine learning can be categorized into three main types: supervised learning, which uses labeled data; unsupervised learning, which works with unlabeled data; and reinforcement learning, where an agent learns through interaction with an environment using rewards and penalties.",
+          "type": "learn",
+          "quiz": {
+            "questions": [
+              {
+                "id": "q1",
+                "text": "Which type of machine learning uses labeled data?",
+                "options": [
+                  "Supervised Learning",
+                  "Unsupervised Learning",
+                  "Reinforcement Learning"
+                ],
+                "correctIndex": 0,
+                "explanation": "Supervised learning involves using labeled data to train models."
+              },
+              {
+                "id": "q2",
+                "text": "In which type of learning does the system find hidden patterns in unlabeled data?",
+                "options": [
+                  "Supervised Learning",
+                  "Unsupervised Learning",
+                  "Reinforcement Learning"
+                ],
+                "correctIndex": 1,
+                "explanation": "Unsupervised learning is used for finding hidden patterns in data without labels."
+              }
+            ],
+            "passingScore": 70
+          },
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 1
+        },
+        {
+          "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-3",
+          "title": "Key Algorithms",
+          "concept": "Introduction to linear regression, decision trees, and neural networks.",
+          "content": "Key algorithms in machine learning include linear regression for making continuous predictions, decision trees for classification tasks, and neural networks for complex pattern recognition.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 2
+        },
+        {
+          "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-4",
+          "title": "Key Concepts",
+          "concept": "Understanding training data vs test data, overfitting and underfitting, feature engineering, and model evaluation metrics.",
+          "content": "Important concepts in machine learning include the distinction between training and test data, avoiding overfitting and underfitting, the process of feature engineering, and evaluating model performance using various metrics.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 3
+        },
+        {
+          "id": "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-5",
+          "title": "Checkpoint",
+          "concept": "Summary of key points covered so far.",
+          "content": "In this journey, we've learned about the definition of machine learning, its types, key algorithms, and important concepts such as training data vs test data, overfitting and underfitting, feature engineering, and model evaluation metrics.",
+          "type": "checkpoint",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 4
+        }
+      ],
+      "createdBy": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "createdAt": "2026-04-26T01:21:56.532Z"
+    },
+    {
+      "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1",
+      "notesId": "6c4e4c2d-e294-43f5-8c1e-b298378600c2",
+      "title": "Data Structures: Trees and Graphs",
+      "description": "Explore the fundamental concepts of trees and graphs, including binary trees, binary search trees, and graph traversal methods.",
+      "nodes": [
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-1",
+          "title": "Introduction to Trees",
+          "concept": "Understanding hierarchical data structures with roots and children.",
+          "content": "Trees are hierarchical data structures where each node can have zero or more child nodes, with one special node called the root. The root is at the top of the hierarchy, and its children form the next level, and so on.",
+          "analogy": "Think of it like a family tree, where each person has parents and children, forming a clear lineage structure.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": false,
+          "isCompleted": false,
+          "order": 0
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-2",
+          "title": "Binary Trees",
+          "concept": "Exploring binary trees, which have at most two children per node.",
+          "content": "Binary trees are a specific type of tree where each node can have at most two children, referred to as the left child and the right child. This structure allows for efficient searching and insertion operations.",
+          "analogy": "Imagine a tree where each branch splits into two smaller branches, just like how a computer file system might split into directories and subdirectories.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 1
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-3",
+          "title": "Binary Search Trees (BST)",
+          "concept": "Understanding BSTs, where left subtree values are less than the parent and right subtree values are greater.",
+          "content": "Binary Search Trees (BSTs) are a special kind of binary tree where the left subtree contains only values less than the parent node, and the right subtree contains only values greater than the parent node. This property allows for efficient search operations.",
+          "analogy": "Think of it like a library catalog where books are sorted alphabetically; you can quickly find any book by checking the section that matches the first letter of the book’s title.",
+          "type": "learn",
+          "quiz": {
+            "questions": [
+              {
+                "id": "q1",
+                "text": "In a BST, if a node has a value of 50, which of the following could be in its left subtree?",
+                "options": [
+                  "49",
+                  "51",
+                  "60",
+                  "70"
+                ],
+                "correctIndex": 0,
+                "explanation": "The correct answer is '49' because in a BST, all values in the left subtree must be less than the parent node."
+              },
+              {
+                "id": "q2",
+                "text": "Which of the following statements is true about a BST?",
+                "options": [
+                  "Left subtree values are greater than the parent.",
+                  "Right subtree values are less than the parent.",
+                  "Left subtree values are less than the parent.",
+                  "All values in the tree are unique."
+                ],
+                "correctIndex": 2,
+                "explanation": "The correct answer is 'Left subtree values are less than the parent.' This is a defining characteristic of a BST."
+              }
+            ],
+            "passingScore": 70
+          },
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 2
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-4",
+          "title": "Graphs Introduction",
+          "concept": "Understanding graphs, which consist of vertices and edges.",
+          "content": "Graphs are another type of data structure that consists of vertices (nodes) and edges (connections) between them. Vertices represent entities, and edges represent relationships between these entities.",
+          "analogy": "Think of a social network where people are represented as nodes and friendships as edges connecting them.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 3
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-5",
+          "title": "Types of Graphs",
+          "concept": "Exploring different types of graphs such as directed, undirected, and weighted graphs.",
+          "content": "Graphs can be classified into different types based on their properties. Directed graphs have edges with a specific direction, undirected graphs have bidirectional edges, and weighted graphs have edges with associated values representing costs or distances.",
+          "analogy": "Consider a road map where one-way streets are directed graphs, two-way streets are undirected graphs, and roads with tolls are weighted graphs.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 4
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-6",
+          "title": "Graph Traversal Methods",
+          "concept": "Understanding BFS and DFS traversal methods for graphs.",
+          "content": "Graph traversal methods allow us to visit all nodes in a graph systematically. Breadth-First Search (BFS) visits nodes level by level, while Depth-First Search (DFS) explores as far down a branch as possible before backtracking.",
+          "analogy": "Think of BFS as exploring a city block by block, while DFS is like diving deep into one alleyway before moving to the next.",
+          "type": "learn",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 5
+        },
+        {
+          "id": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-7",
+          "title": "Checkpoint",
+          "concept": "Recap of key points on trees and graphs.",
+          "content": "In this journey, we explored the basics of trees, including binary trees and binary search trees, and introduced the concept of graphs, including different types and traversal methods.",
+          "analogy": "Think of this checkpoint like a pit stop in a race — a moment to consolidate what you have learned before pushing forward.",
+          "type": "checkpoint",
+          "quiz": null,
+          "isLocked": true,
+          "isCompleted": false,
+          "order": 6
+        }
+      ],
+      "createdBy": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "createdAt": "2026-04-26T01:58:08.999Z"
+    }
+  ],
+  "journey_progress": [
+    {
+      "id": "c9d1423c-2afe-402c-89de-bf9cab18f6f1",
+      "journeyId": "a1cb4fe2-5da1-4277-af94-fb38e0413f53",
+      "userId": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "completedNodes": [
+        "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-1",
+        "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-2",
+        "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-3",
+        "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-4",
+        "a1cb4fe2-5da1-4277-af94-fb38e0413f53-node-5"
+      ],
+      "currentNodeId": null,
+      "progressPercentage": 100,
+      "startedAt": "2026-04-26T01:21:56.534Z",
+      "completedAt": "2026-04-26T01:29:16.841Z"
+    },
+    {
+      "id": "44a7ebf1-5cc5-45a1-9f59-31e25b97d63e",
+      "journeyId": "d20c80ec-71c1-4eae-924d-3cbae22fccb1",
+      "userId": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "completedNodes": [
+        "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-1"
+      ],
+      "currentNodeId": "d20c80ec-71c1-4eae-924d-3cbae22fccb1-node-2",
+      "progressPercentage": 14,
+      "startedAt": "2026-04-26T01:58:09.001Z",
+      "completedAt": null
+    }
+  ],
+  "badges": [
+    {
+      "id": "19f567be-084d-40ca-8516-fef37ea13d3d",
+      "userId": "886ae87e-be5b-424c-ae94-bed49e7cad5f",
+      "journeyId": "a1cb4fe2-5da1-4277-af94-fb38e0413f53",
+      "title": "Journey Complete: Introduction to Machine Learning",
+      "description": "Completed the Introduction to Machine Learning learning journey",
+      "icon": "🏆",
+      "earnedAt": "2026-04-26T01:29:16.858Z"
+    }
+  ]
 }

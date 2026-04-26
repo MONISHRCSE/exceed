@@ -20,6 +20,7 @@ const intelligenceRoutes = require('./routes/intelligence');
 const classRoutes = require('./routes/classes');
 const queryRoutes = require('./routes/queries');
 const leaderboardRoutes = require('./routes/leaderboard');
+const journeyRoutes = require('./routes/journeys');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -49,6 +50,7 @@ app.use('/api/intelligence', intelligenceRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/queries', queryRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/journeys', journeyRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

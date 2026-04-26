@@ -31,6 +31,8 @@ import MyClassesPage from './pages/student/MyClasses'
 import QueryToTutor from './pages/student/QueryToTutor'
 import TutorQueries from './pages/teacher/TutorQueries'
 import LeaderboardPage from './pages/student/Leaderboard'
+import StoryMode from './pages/student/StoryMode'
+import JourneyPlayer from './pages/student/JourneyPlayer'
 
 function ProtectedRoute({ children, role }: { children: React.ReactNode; role: 'teacher' | 'student' }) {
   const { user, loading } = useAuth()
@@ -96,6 +98,8 @@ export default function App() {
         <Route path="classes" element={<MyClassesPage />} />
         <Route path="queries" element={<QueryToTutor />} />
         <Route path="leaderboard" element={<LeaderboardPage />} />
+        <Route path="story" element={<StoryMode />} />
+        <Route path="story/:journeyId" element={<JourneyPlayer />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />
